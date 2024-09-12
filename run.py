@@ -10,7 +10,8 @@ from datetime import datetime
 import numpy as np
 import cv2
 import cam_bien_van_tay as vt
-import time
+import time, random
+import emailPython
 
 # Khởi tạo firebase
 from firebase import firebase
@@ -53,7 +54,7 @@ class FingerPrintThread(QThread):
                 
                 break
             elif stateFind_FingerPrint == False:
-                if dang_xuat == 0 or dang_xuat == 1:
+                if dang_xuat == 0:
                     self.signal_van_tay_that_bai.emit("Đăng nhập", "Đăng nhập Vân tay Không thành công") # truyền tín hiệu tới
                 else:
                     dang_xuat = 0
@@ -151,7 +152,8 @@ class MainWindow(QMainWindow):
             self.uic.btn_doi_mk_dn.clicked.connect(self.trang_doi_mat_khau)
             self.tin_hieu_dang_nhap = True 
         
-        self.hidden_show_text(self.uic.cb_mk_dn, self.uic.Edt_mk_dn)
+        self.uic.cb_mk_dn.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mk_dn, self.uic.Edt_mk_dn))
+        
         
     # Hàm đăng nhập
     # SHow mess đăng nhập VÂN TAY KHÔNG thành công
@@ -252,7 +254,10 @@ class MainWindow(QMainWindow):
             self.uic.btn_face_dk.clicked.connect(self.trang_dang_ki_face_id)
             self.uic.btn_vt_dki.clicked.connect(self.dang_ki_van_tay)
             self.tin_hieu_dang_ky = True
-    
+            
+        self.uic.cb_mkdki.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mkdki, self.uic.edt_mk_dk))
+        self.uic.cb_mkl_dki.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mkl_dki, self.uic.edt_mkl_dk))
+        
     def trang_dang_ki_face_id(self):
         pass
     
@@ -408,23 +413,81 @@ class MainWindow(QMainWindow):
         
     ################################ TRANG QUÊN MẬT KHẨU###########################
     def trang_quen_mat_khau(self):
+        # He thong se gui mat khau moi ve email cua ban
+        
+        
+        
         self.thread_van_tay.stop()
         if tt_Webcam == "Bật":
             self.thread_webcam_face.stop()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_quen_mk)    
+        
+        
         if self.tin_hieu_trang_quen_mat_khau == False:
             self.uic.btn_dn_quen.clicked.connect(self.vao_trang_dang_nhap)
-            
+            self.uic.btn_xn_clmk.clicked.connect(self.cap_lai_mat_khau) 
             self.tin_hieu_trang_quen_mat_khau = True    
+            # edt_tk_quenmk, btn_xn_clmk
+            
+        
     
     
     #################################### TRANG ĐỔI MẬT KHẨU ########################
     def trang_doi_mat_khau(self):
+        global dang_xuat
+        
+        dang_xuat = 2
         self.thread_van_tay.stop()
         if tt_Webcam == "Bật":
             self.thread_webcam_face.stop()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_doi_mk)
         
+        if self.tin_hieu_trang_doi_mat_khau == False:
+            self.uic.btn_xn_doi_mk.clicked.connect(self.xac_nhan_doi_mat_khau)
+            self.uic.btn_ql_dn_doimk.clicked.connect(self.vao_trang_dang_nhap)
+            self.tin_hieu_trang_doi_mat_khau = True
+            
+        self.uic.cb_mk_cu.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mk_cu, self.uic.edt_mkcu))
+        self.uic.cb_mkmoi.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mkmoi, self.uic.edt_mk_moi))
+        self.uic.cb_xnmk_moi.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_xnmk_moi, self.uic.edt_xn_mkmoi))
+    
+    def xac_nhan_doi_mat_khau(self):
+        tk = self.uic.edt_tk_doi_mk.text()
+        mkcu = self.uic.edt_mkcu.text()
+        mk_moi1 = self.uic.edt_mk_moi.text()
+        mk_moi_xac_nhan = self.uic.edt_xn_mkmoi.text()
+        
+        dsTK = get_all_info_database(urlUser, 0)
+        dsMK = get_all_info_database(urlUser, 1)
+        dsVT = get_all_info_database(urlUser, 2)
+        dsFace = get_all_info_database(urlUser, 3)   
+        
+        if len(tk) > 0 and len(mkcu) > 0 and len(mk_moi1) > 0 and len(mk_moi_xac_nhan) > 0:
+            if tk in dsTK:
+                index_user = dsTK.index(tk)
+                name_user = f"User {index_user}"
+                if mkcu == dsMK[index_user]:
+                    if len(mk_moi1) >= 8:
+                        if mk_moi1 != mkcu:
+                            if mk_moi1 == mk_moi_xac_nhan:
+                                replace_new_info = [tk, mk_moi1, dsVT[index_user], dsFace[index_user]]
+                                firebase.put(urlUser, name_user, replace_new_info)
+                                self.clear_trang_doi_mat_khau()
+                                showMessageBox("Thông báo", "Đổi mật khẩu thành công")
+                            else:
+                                showMessageBox("Thông báo", "Xác nhận lại mật khẩu")
+                        else:
+                            showMessageBox("Thông báo", "Tùng mật khẩu cũ")
+                    else:
+                        showMessageBox("Thông báo", "Mật khẩu lớn hơn 8 ký tự")
+                else:
+                    showMessageBox("Thông báo", "Sai mật khẩu cũ")
+            else:
+                showMessageBox("Thông báo", "Tài khoản không tồn tại")
+        else:
+            showMessageBox("Thông báo", "Vui lòng nhập đầy đủ thông tin")
+        
+    
     
         
     def clear_trang_dang_ky(self):
@@ -435,12 +498,54 @@ class MainWindow(QMainWindow):
     def clear_trang_dang_nhap(self):
         self.uic.Edt_tk_dn.clear()
         self.uic.Edt_mk_dn.clear()
+        
+    def clear_trang_quen_mat_khau(self):
+        self.uic.edt_tk_quenmk.clear()
+        
+    def clear_trang_doi_mat_khau(self):
+        self.uic.edt_tk_doi_mk.clear()
+        self.uic.edt_mkcu.clear()
+        self.uic.edt_mk_moi.clear()
+        self.uic.edt_xn_mkmoi.clear()
     
     def hidden_show_text(self, cb_edt, edt_text):
+        
         if cb_edt.isChecked() == True:
             edt_text.setEchoMode(QLineEdit.EchoMode.Normal)
         else:
             edt_text.setEchoMode(QLineEdit.EchoMode.Password)
+            
+            
+    def cap_lai_mat_khau(self):
+        global dang_xuat
+        dang_xuat = 2
+        tkClMk = self.uic.edt_tk_quenmk.text()
+        dsTK = get_all_info_database(urlUser, 0)
+        
+        dsVT = get_all_info_database(urlUser, 2)
+        dsFace = get_all_info_database(urlUser, 3)
+        
+        index_tk = dsTK.index(tkClMk)
+        name_user = f'User {index_tk}'
+        
+        
+        if tkClMk not in dsTK:
+            showMessageBox("Thông báo", "Tài khoản không tồn tại")
+        else:
+            rdNewMk = str(random.randint(10**6, 10**8))
+            
+            replace_info_user = [tkClMk, rdNewMk, dsVT[index_tk], dsFace[index_tk]]
+            
+            
+            state_send = emailPython.sendEmail(email_sender = "lap2003dodang@gmail.com", email_password = "jgsa mvte plxs ilqg", email_receiver = tkClMk, subject = "Cấp lại mật khẩu", body = rdNewMk) 
+            if state_send == True:
+                showMessageBox("Thông báo", "Hệ thống đã gửi mật khẩu mới qua gmail của bạn")
+                firebase.put(urlUser, name_user, replace_info_user)
+                self.clear_trang_quen_mat_khau()
+                self.vao_trang_dang_nhap()
+                
+            else:
+                showMessageBox("Thông báo", "Lỗi hệ thống gửi gmail")
     
 def showMessageBox(title, content):
     msg = QMessageBox()

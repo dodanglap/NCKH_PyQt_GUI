@@ -29,7 +29,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="trang_dang_nhap">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -1234,7 +1234,7 @@ border-radius: 20px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QCheckBox" name="checkBox_2">
+                    <widget class="QCheckBox" name="cb_mkdki">
                      <property name="text">
                       <string>Hiện mật khẩu</string>
                      </property>
@@ -1292,7 +1292,7 @@ border-radius: 20px;</string>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QCheckBox" name="checkBox_3">
+                    <widget class="QCheckBox" name="cb_mkl_dki">
                      <property name="text">
                       <string>Hiện mật khẩu xác nhận</string>
                      </property>
