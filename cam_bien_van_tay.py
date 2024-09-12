@@ -203,19 +203,21 @@ def save_van_tay(list_van_tay):
 			
         
         
-def find_van_tay(list_van_tay):
+def find_van_tay():
+	
     state_find_van_tay = get_fingerprint()
     if state_find_van_tay == True:
         id = finger.finger_id
+        print("ID: ", id)
+        print(type(id))
         
         # Check id trong list_van_tay lấy về từ firebase
         
-        if id in list_van_tay :
-            return True
-        return False
+        return id, True
+        
 
     else:
-        return False
+        return 0, False
         
 def remove_van_tay(list_van_tay):
     check_van_tay = get_fingerprint()
