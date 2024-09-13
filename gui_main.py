@@ -12,7 +12,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1122, 860)
+        MainWindow.resize(1098, 860)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -351,18 +351,150 @@ class Ui_MainWindow(object):
         self.horizontalLayout_6.addItem(spacerItem4)
         self.gridLayout_3.addLayout(self.horizontalLayout_6, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.trang_dang_nhap)
+        self.trang_xoa_face_id = QtWidgets.QWidget()
+        self.trang_xoa_face_id.setObjectName("trang_xoa_face_id")
+        self.gridLayout_12 = QtWidgets.QGridLayout(self.trang_xoa_face_id)
+        self.gridLayout_12.setObjectName("gridLayout_12")
+        self.horizontalLayout_41 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_41.setObjectName("horizontalLayout_41")
+        spacerItem5 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_41.addItem(spacerItem5)
+        self.verticalLayout_43 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_43.setObjectName("verticalLayout_43")
+        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_43.addItem(spacerItem6)
+        self.horizontalLayout_42 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_42.setObjectName("horizontalLayout_42")
+        self.frame_29 = QtWidgets.QFrame(parent=self.trang_xoa_face_id)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_29.sizePolicy().hasHeightForWidth())
+        self.frame_29.setSizePolicy(sizePolicy)
+        self.frame_29.setMinimumSize(QtCore.QSize(0, 0))
+        self.frame_29.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_29.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_29.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_29.setObjectName("frame_29")
+        self.verticalLayout_44 = QtWidgets.QVBoxLayout(self.frame_29)
+        self.verticalLayout_44.setObjectName("verticalLayout_44")
+        self.label_47 = QtWidgets.QLabel(parent=self.frame_29)
+        self.label_47.setMinimumSize(QtCore.QSize(278, 50))
+        self.label_47.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_47.setFont(font)
+        self.label_47.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_47.setObjectName("label_47")
+        self.verticalLayout_44.addWidget(self.label_47)
+        self.label_48 = QtWidgets.QLabel(parent=self.frame_29)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_48.sizePolicy().hasHeightForWidth())
+        self.label_48.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_48.setFont(font)
+        self.label_48.setObjectName("label_48")
+        self.verticalLayout_44.addWidget(self.label_48)
+        self.edt_tk_xoa_face = QtWidgets.QLineEdit(parent=self.frame_29)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edt_tk_xoa_face.sizePolicy().hasHeightForWidth())
+        self.edt_tk_xoa_face.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Arial,sans-serif")
+        font.setPointSize(-1)
+        self.edt_tk_xoa_face.setFont(font)
+        self.edt_tk_xoa_face.setStyleSheet("QLineEdit {\n"
+"                border: 2px solid black;\n"
+"                border-radius: 10px;\n"
+"                padding: 10px;\n"
+"                background-color: #f5f5f5;\n"
+"                color: #333;\n"
+"                font-family: Arial, sans-serif;\n"
+"                font-size: 14px;\n"
+"            }\n"
+"            QLineEdit:focus {\n"
+"                border: 2px solid black;\n"
+"            }")
+        self.edt_tk_xoa_face.setObjectName("edt_tk_xoa_face")
+        self.verticalLayout_44.addWidget(self.edt_tk_xoa_face)
+        self.horizontalLayout_42.addWidget(self.frame_29)
+        self.verticalLayout_43.addLayout(self.horizontalLayout_42)
+        self.frame_30 = QtWidgets.QFrame(parent=self.trang_xoa_face_id)
+        self.frame_30.setMinimumSize(QtCore.QSize(400, 140))
+        self.frame_30.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_30.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_30.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_30.setObjectName("frame_30")
+        self.horizontalLayout_43 = QtWidgets.QHBoxLayout(self.frame_30)
+        self.horizontalLayout_43.setObjectName("horizontalLayout_43")
+        self.btn_trang_chu_xoa_face = QtWidgets.QPushButton(parent=self.frame_30)
+        self.btn_trang_chu_xoa_face.setMaximumSize(QtCore.QSize(110, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_trang_chu_xoa_face.setFont(font)
+        self.btn_trang_chu_xoa_face.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 0, 50);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(109, 109, 109);\n"
+"    \n"
+"    \n"
+"}\n"
+"")
+        self.btn_trang_chu_xoa_face.setObjectName("btn_trang_chu_xoa_face")
+        self.horizontalLayout_43.addWidget(self.btn_trang_chu_xoa_face)
+        self.btn_xoa_face = QtWidgets.QPushButton(parent=self.frame_30)
+        self.btn_xoa_face.setMaximumSize(QtCore.QSize(120, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_xoa_face.setFont(font)
+        self.btn_xoa_face.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(80, 0, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_xoa_face.setObjectName("btn_xoa_face")
+        self.horizontalLayout_43.addWidget(self.btn_xoa_face)
+        self.verticalLayout_43.addWidget(self.frame_30)
+        spacerItem7 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_43.addItem(spacerItem7)
+        self.horizontalLayout_41.addLayout(self.verticalLayout_43)
+        spacerItem8 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_41.addItem(spacerItem8)
+        self.gridLayout_12.addLayout(self.horizontalLayout_41, 0, 0, 1, 1)
+        self.stackedWidget.addWidget(self.trang_xoa_face_id)
         self.trang_doi_mk = QtWidgets.QWidget()
         self.trang_doi_mk.setObjectName("trang_doi_mk")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.trang_doi_mk)
         self.gridLayout_5.setObjectName("gridLayout_5")
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        spacerItem5 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_11.addItem(spacerItem5)
+        spacerItem9 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_11.addItem(spacerItem9)
         self.verticalLayout_13 = QtWidgets.QVBoxLayout()
         self.verticalLayout_13.setObjectName("verticalLayout_13")
-        spacerItem6 = QtWidgets.QSpacerItem(20, 38, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_13.addItem(spacerItem6)
+        spacerItem10 = QtWidgets.QSpacerItem(20, 38, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_13.addItem(spacerItem10)
         self.verticalLayout_14 = QtWidgets.QVBoxLayout()
         self.verticalLayout_14.setObjectName("verticalLayout_14")
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
@@ -595,11 +727,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13.addWidget(self.btn_ql_dn_doimk)
         self.verticalLayout_14.addWidget(self.frame_11)
         self.verticalLayout_13.addLayout(self.verticalLayout_14)
-        spacerItem7 = QtWidgets.QSpacerItem(20, 98, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_13.addItem(spacerItem7)
+        spacerItem11 = QtWidgets.QSpacerItem(20, 98, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_13.addItem(spacerItem11)
         self.horizontalLayout_11.addLayout(self.verticalLayout_13)
-        spacerItem8 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_11.addItem(spacerItem8)
+        spacerItem12 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_11.addItem(spacerItem12)
         self.gridLayout_5.addLayout(self.horizontalLayout_11, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.trang_doi_mk)
         self.trang_dang_ky = QtWidgets.QWidget()
@@ -608,12 +740,12 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        spacerItem9 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem9)
+        spacerItem13 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem13)
         self.verticalLayout_5 = QtWidgets.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        spacerItem10 = QtWidgets.QSpacerItem(20, 38, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_5.addItem(spacerItem10)
+        spacerItem14 = QtWidgets.QSpacerItem(20, 38, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem14)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
@@ -792,8 +924,8 @@ class Ui_MainWindow(object):
         self.lb_vt_dki.setObjectName("lb_vt_dki")
         self.verticalLayout.addWidget(self.lb_vt_dki)
         self.horizontalLayout_2.addWidget(self.frame_3)
-        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem11)
+        spacerItem15 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem15)
         self.frame_5 = QtWidgets.QFrame(parent=self.trang_dang_ky)
         self.frame_5.setMinimumSize(QtCore.QSize(320, 350))
         self.frame_5.setMaximumSize(QtCore.QSize(300, 450))
@@ -945,11 +1077,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.btn_ql_dn)
         self.verticalLayout_4.addWidget(self.frame_4)
         self.verticalLayout_5.addLayout(self.verticalLayout_4)
-        spacerItem12 = QtWidgets.QSpacerItem(20, 98, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_5.addItem(spacerItem12)
+        spacerItem16 = QtWidgets.QSpacerItem(20, 98, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_5.addItem(spacerItem16)
         self.horizontalLayout_5.addLayout(self.verticalLayout_5)
-        spacerItem13 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_5.addItem(spacerItem13)
+        spacerItem17 = QtWidgets.QSpacerItem(128, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_5.addItem(spacerItem17)
         self.gridLayout_2.addLayout(self.horizontalLayout_5, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.trang_dang_ky)
         self.trang_chinh = QtWidgets.QWidget()
@@ -958,12 +1090,12 @@ class Ui_MainWindow(object):
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.gridLayout_7 = QtWidgets.QGridLayout()
         self.gridLayout_7.setObjectName("gridLayout_7")
-        spacerItem14 = QtWidgets.QSpacerItem(500, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout_7.addItem(spacerItem14, 0, 0, 1, 1)
+        spacerItem18 = QtWidgets.QSpacerItem(200, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_7.addItem(spacerItem18, 0, 0, 1, 1)
         self.verticalLayout_17 = QtWidgets.QVBoxLayout()
         self.verticalLayout_17.setObjectName("verticalLayout_17")
-        spacerItem15 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.verticalLayout_17.addItem(spacerItem15)
+        spacerItem19 = QtWidgets.QSpacerItem(20, 100, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.verticalLayout_17.addItem(spacerItem19)
         self.verticalLayout_16 = QtWidgets.QVBoxLayout()
         self.verticalLayout_16.setObjectName("verticalLayout_16")
         self.horizontalLayout_14 = QtWidgets.QHBoxLayout()
@@ -986,8 +1118,8 @@ class Ui_MainWindow(object):
 "")
         self.btn_dx_user.setObjectName("btn_dx_user")
         self.horizontalLayout_14.addWidget(self.btn_dx_user)
-        spacerItem16 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem16)
+        spacerItem20 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem20)
         self.label_12 = QtWidgets.QLabel(parent=self.trang_chinh)
         font = QtGui.QFont()
         font.setFamily("Tahoma")
@@ -997,14 +1129,19 @@ class Ui_MainWindow(object):
         self.label_12.setFont(font)
         self.label_12.setObjectName("label_12")
         self.horizontalLayout_14.addWidget(self.label_12)
-        spacerItem17 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_14.addItem(spacerItem17)
+        spacerItem21 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_14.addItem(spacerItem21)
         self.lb_tk_dn = QtWidgets.QLabel(parent=self.trang_chinh)
         font = QtGui.QFont()
         font.setPointSize(11)
         self.lb_tk_dn.setFont(font)
         self.lb_tk_dn.setObjectName("lb_tk_dn")
         self.horizontalLayout_14.addWidget(self.lb_tk_dn)
+        self.combo_option_tk = QtWidgets.QComboBox(parent=self.trang_chinh)
+        self.combo_option_tk.setStyleSheet("background-color: rgb(0, 0, 42);\n"
+"color: rgb(255, 255, 255);")
+        self.combo_option_tk.setObjectName("combo_option_tk")
+        self.horizontalLayout_14.addWidget(self.combo_option_tk)
         self.verticalLayout_16.addLayout(self.horizontalLayout_14)
         self.verticalLayout_10 = QtWidgets.QVBoxLayout()
         self.verticalLayout_10.setObjectName("verticalLayout_10")
@@ -1058,11 +1195,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_10.addLayout(self.horizontalLayout_7)
         self.verticalLayout_16.addLayout(self.verticalLayout_10)
         self.verticalLayout_17.addLayout(self.verticalLayout_16)
-        spacerItem18 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_17.addItem(spacerItem18)
+        spacerItem22 = QtWidgets.QSpacerItem(20, 80, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_17.addItem(spacerItem22)
         self.gridLayout_7.addLayout(self.verticalLayout_17, 0, 1, 1, 1)
-        spacerItem19 = QtWidgets.QSpacerItem(500, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.gridLayout_7.addItem(spacerItem19, 0, 2, 1, 1)
+        spacerItem23 = QtWidgets.QSpacerItem(200, 20, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_7.addItem(spacerItem23, 0, 2, 1, 1)
         self.gridLayout_6.addLayout(self.gridLayout_7, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.trang_chinh)
         self.trang_quen_mk = QtWidgets.QWidget()
@@ -1071,12 +1208,12 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        spacerItem20 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_8.addItem(spacerItem20)
+        spacerItem24 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem24)
         self.verticalLayout_11 = QtWidgets.QVBoxLayout()
         self.verticalLayout_11.setObjectName("verticalLayout_11")
-        spacerItem21 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_11.addItem(spacerItem21)
+        spacerItem25 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_11.addItem(spacerItem25)
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
         self.frame_7 = QtWidgets.QFrame(parent=self.trang_quen_mk)
@@ -1195,17 +1332,567 @@ class Ui_MainWindow(object):
         self.btn_xn_clmk.setObjectName("btn_xn_clmk")
         self.horizontalLayout_10.addWidget(self.btn_xn_clmk)
         self.verticalLayout_11.addWidget(self.frame_9)
-        spacerItem22 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        self.verticalLayout_11.addItem(spacerItem22)
+        spacerItem26 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_11.addItem(spacerItem26)
         self.horizontalLayout_8.addLayout(self.verticalLayout_11)
-        spacerItem23 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_8.addItem(spacerItem23)
+        spacerItem27 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem27)
         self.gridLayout_4.addLayout(self.horizontalLayout_8, 0, 0, 1, 1)
         self.stackedWidget.addWidget(self.trang_quen_mk)
+        self.trang_doi_van_tay = QtWidgets.QWidget()
+        self.trang_doi_van_tay.setObjectName("trang_doi_van_tay")
+        self.gridLayout_8 = QtWidgets.QGridLayout(self.trang_doi_van_tay)
+        self.gridLayout_8.setObjectName("gridLayout_8")
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        spacerItem28 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_15.addItem(spacerItem28)
+        self.verticalLayout_18 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_18.setObjectName("verticalLayout_18")
+        spacerItem29 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_18.addItem(spacerItem29)
+        self.horizontalLayout_16 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_16.setObjectName("horizontalLayout_16")
+        self.frame_10 = QtWidgets.QFrame(parent=self.trang_doi_van_tay)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_10.sizePolicy().hasHeightForWidth())
+        self.frame_10.setSizePolicy(sizePolicy)
+        self.frame_10.setMinimumSize(QtCore.QSize(0, 0))
+        self.frame_10.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_10.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout(self.frame_10)
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.label_20 = QtWidgets.QLabel(parent=self.frame_10)
+        self.label_20.setMinimumSize(QtCore.QSize(278, 50))
+        self.label_20.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_20.setFont(font)
+        self.label_20.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_20.setObjectName("label_20")
+        self.verticalLayout_19.addWidget(self.label_20)
+        self.label_21 = QtWidgets.QLabel(parent=self.frame_10)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
+        self.label_21.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_21.setFont(font)
+        self.label_21.setObjectName("label_21")
+        self.verticalLayout_19.addWidget(self.label_21)
+        self.edt_tk_doi_vt = QtWidgets.QLineEdit(parent=self.frame_10)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edt_tk_doi_vt.sizePolicy().hasHeightForWidth())
+        self.edt_tk_doi_vt.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Arial,sans-serif")
+        font.setPointSize(-1)
+        self.edt_tk_doi_vt.setFont(font)
+        self.edt_tk_doi_vt.setStyleSheet("QLineEdit {\n"
+"                border: 2px solid black;\n"
+"                border-radius: 10px;\n"
+"                padding: 10px;\n"
+"                background-color: #f5f5f5;\n"
+"                color: #333;\n"
+"                font-family: Arial, sans-serif;\n"
+"                font-size: 14px;\n"
+"            }\n"
+"            QLineEdit:focus {\n"
+"                border: 2px solid black;\n"
+"            }")
+        self.edt_tk_doi_vt.setObjectName("edt_tk_doi_vt")
+        self.verticalLayout_19.addWidget(self.edt_tk_doi_vt)
+        self.horizontalLayout_16.addWidget(self.frame_10)
+        self.verticalLayout_18.addLayout(self.horizontalLayout_16)
+        self.frame_12 = QtWidgets.QFrame(parent=self.trang_doi_van_tay)
+        self.frame_12.setMinimumSize(QtCore.QSize(400, 140))
+        self.frame_12.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_12.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_12.setObjectName("frame_12")
+        self.horizontalLayout_17 = QtWidgets.QHBoxLayout(self.frame_12)
+        self.horizontalLayout_17.setObjectName("horizontalLayout_17")
+        self.btn_dn_doi_vt = QtWidgets.QPushButton(parent=self.frame_12)
+        self.btn_dn_doi_vt.setMaximumSize(QtCore.QSize(110, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_dn_doi_vt.setFont(font)
+        self.btn_dn_doi_vt.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 0, 50);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(109, 109, 109);\n"
+"    \n"
+"    \n"
+"}\n"
+"")
+        self.btn_dn_doi_vt.setObjectName("btn_dn_doi_vt")
+        self.horizontalLayout_17.addWidget(self.btn_dn_doi_vt)
+        self.btn_xn_doi_vt = QtWidgets.QPushButton(parent=self.frame_12)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btn_xn_doi_vt.sizePolicy().hasHeightForWidth())
+        self.btn_xn_doi_vt.setSizePolicy(sizePolicy)
+        self.btn_xn_doi_vt.setMaximumSize(QtCore.QSize(150, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_xn_doi_vt.setFont(font)
+        self.btn_xn_doi_vt.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 90, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_xn_doi_vt.setObjectName("btn_xn_doi_vt")
+        self.horizontalLayout_17.addWidget(self.btn_xn_doi_vt)
+        self.btn_them_vt_doi_vt = QtWidgets.QPushButton(parent=self.frame_12)
+        self.btn_them_vt_doi_vt.setMaximumSize(QtCore.QSize(120, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_them_vt_doi_vt.setFont(font)
+        self.btn_them_vt_doi_vt.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(80, 0, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_them_vt_doi_vt.setObjectName("btn_them_vt_doi_vt")
+        self.horizontalLayout_17.addWidget(self.btn_them_vt_doi_vt)
+        self.verticalLayout_18.addWidget(self.frame_12)
+        spacerItem30 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_18.addItem(spacerItem30)
+        self.horizontalLayout_15.addLayout(self.verticalLayout_18)
+        spacerItem31 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_15.addItem(spacerItem31)
+        self.gridLayout_8.addLayout(self.horizontalLayout_15, 0, 0, 1, 1)
+        self.stackedWidget.addWidget(self.trang_doi_van_tay)
+        self.trang_them_van_tay = QtWidgets.QWidget()
+        self.trang_them_van_tay.setObjectName("trang_them_van_tay")
+        self.gridLayout_9 = QtWidgets.QGridLayout(self.trang_them_van_tay)
+        self.gridLayout_9.setObjectName("gridLayout_9")
+        self.horizontalLayout_32 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_32.setObjectName("horizontalLayout_32")
+        spacerItem32 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_32.addItem(spacerItem32)
+        self.verticalLayout_37 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_37.setObjectName("verticalLayout_37")
+        spacerItem33 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_37.addItem(spacerItem33)
+        self.horizontalLayout_33 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_33.setObjectName("horizontalLayout_33")
+        self.frame_23 = QtWidgets.QFrame(parent=self.trang_them_van_tay)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_23.sizePolicy().hasHeightForWidth())
+        self.frame_23.setSizePolicy(sizePolicy)
+        self.frame_23.setMinimumSize(QtCore.QSize(0, 0))
+        self.frame_23.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_23.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_23.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_23.setObjectName("frame_23")
+        self.verticalLayout_38 = QtWidgets.QVBoxLayout(self.frame_23)
+        self.verticalLayout_38.setObjectName("verticalLayout_38")
+        self.label_41 = QtWidgets.QLabel(parent=self.frame_23)
+        self.label_41.setMinimumSize(QtCore.QSize(278, 50))
+        self.label_41.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_41.setFont(font)
+        self.label_41.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_41.setObjectName("label_41")
+        self.verticalLayout_38.addWidget(self.label_41)
+        self.label_42 = QtWidgets.QLabel(parent=self.frame_23)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_42.sizePolicy().hasHeightForWidth())
+        self.label_42.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_42.setFont(font)
+        self.label_42.setObjectName("label_42")
+        self.verticalLayout_38.addWidget(self.label_42)
+        self.edt_tk_them_vt = QtWidgets.QLineEdit(parent=self.frame_23)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edt_tk_them_vt.sizePolicy().hasHeightForWidth())
+        self.edt_tk_them_vt.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Arial,sans-serif")
+        font.setPointSize(-1)
+        self.edt_tk_them_vt.setFont(font)
+        self.edt_tk_them_vt.setStyleSheet("QLineEdit {\n"
+"                border: 2px solid black;\n"
+"                border-radius: 10px;\n"
+"                padding: 10px;\n"
+"                background-color: #f5f5f5;\n"
+"                color: #333;\n"
+"                font-family: Arial, sans-serif;\n"
+"                font-size: 14px;\n"
+"            }\n"
+"            QLineEdit:focus {\n"
+"                border: 2px solid black;\n"
+"            }")
+        self.edt_tk_them_vt.setObjectName("edt_tk_them_vt")
+        self.verticalLayout_38.addWidget(self.edt_tk_them_vt)
+        self.horizontalLayout_33.addWidget(self.frame_23)
+        self.verticalLayout_37.addLayout(self.horizontalLayout_33)
+        self.frame_24 = QtWidgets.QFrame(parent=self.trang_them_van_tay)
+        self.frame_24.setMinimumSize(QtCore.QSize(400, 140))
+        self.frame_24.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_24.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_24.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_24.setObjectName("frame_24")
+        self.horizontalLayout_34 = QtWidgets.QHBoxLayout(self.frame_24)
+        self.horizontalLayout_34.setObjectName("horizontalLayout_34")
+        self.btn_trang_chu_them_van_tay = QtWidgets.QPushButton(parent=self.frame_24)
+        self.btn_trang_chu_them_van_tay.setMaximumSize(QtCore.QSize(110, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_trang_chu_them_van_tay.setFont(font)
+        self.btn_trang_chu_them_van_tay.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 0, 50);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(109, 109, 109);\n"
+"    \n"
+"    \n"
+"}\n"
+"")
+        self.btn_trang_chu_them_van_tay.setObjectName("btn_trang_chu_them_van_tay")
+        self.horizontalLayout_34.addWidget(self.btn_trang_chu_them_van_tay)
+        self.btn_them_vt_them = QtWidgets.QPushButton(parent=self.frame_24)
+        self.btn_them_vt_them.setMaximumSize(QtCore.QSize(120, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_them_vt_them.setFont(font)
+        self.btn_them_vt_them.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(80, 0, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_them_vt_them.setObjectName("btn_them_vt_them")
+        self.horizontalLayout_34.addWidget(self.btn_them_vt_them)
+        self.verticalLayout_37.addWidget(self.frame_24)
+        spacerItem34 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_37.addItem(spacerItem34)
+        self.horizontalLayout_32.addLayout(self.verticalLayout_37)
+        spacerItem35 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_32.addItem(spacerItem35)
+        self.gridLayout_9.addLayout(self.horizontalLayout_32, 0, 0, 1, 1)
+        self.stackedWidget.addWidget(self.trang_them_van_tay)
+        self.trang_xoa_van_tay = QtWidgets.QWidget()
+        self.trang_xoa_van_tay.setObjectName("trang_xoa_van_tay")
+        self.gridLayout_10 = QtWidgets.QGridLayout(self.trang_xoa_van_tay)
+        self.gridLayout_10.setObjectName("gridLayout_10")
+        self.horizontalLayout_35 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_35.setObjectName("horizontalLayout_35")
+        spacerItem36 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_35.addItem(spacerItem36)
+        self.verticalLayout_39 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_39.setObjectName("verticalLayout_39")
+        spacerItem37 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_39.addItem(spacerItem37)
+        self.horizontalLayout_36 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_36.setObjectName("horizontalLayout_36")
+        self.frame_25 = QtWidgets.QFrame(parent=self.trang_xoa_van_tay)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_25.sizePolicy().hasHeightForWidth())
+        self.frame_25.setSizePolicy(sizePolicy)
+        self.frame_25.setMinimumSize(QtCore.QSize(0, 0))
+        self.frame_25.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_25.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_25.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_25.setObjectName("frame_25")
+        self.verticalLayout_40 = QtWidgets.QVBoxLayout(self.frame_25)
+        self.verticalLayout_40.setObjectName("verticalLayout_40")
+        self.label_43 = QtWidgets.QLabel(parent=self.frame_25)
+        self.label_43.setMinimumSize(QtCore.QSize(278, 50))
+        self.label_43.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_43.setFont(font)
+        self.label_43.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_43.setObjectName("label_43")
+        self.verticalLayout_40.addWidget(self.label_43)
+        self.label_44 = QtWidgets.QLabel(parent=self.frame_25)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_44.sizePolicy().hasHeightForWidth())
+        self.label_44.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_44.setFont(font)
+        self.label_44.setObjectName("label_44")
+        self.verticalLayout_40.addWidget(self.label_44)
+        self.edt_tk_xoa_vt = QtWidgets.QLineEdit(parent=self.frame_25)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edt_tk_xoa_vt.sizePolicy().hasHeightForWidth())
+        self.edt_tk_xoa_vt.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Arial,sans-serif")
+        font.setPointSize(-1)
+        self.edt_tk_xoa_vt.setFont(font)
+        self.edt_tk_xoa_vt.setStyleSheet("QLineEdit {\n"
+"                border: 2px solid black;\n"
+"                border-radius: 10px;\n"
+"                padding: 10px;\n"
+"                background-color: #f5f5f5;\n"
+"                color: #333;\n"
+"                font-family: Arial, sans-serif;\n"
+"                font-size: 14px;\n"
+"            }\n"
+"            QLineEdit:focus {\n"
+"                border: 2px solid black;\n"
+"            }")
+        self.edt_tk_xoa_vt.setObjectName("edt_tk_xoa_vt")
+        self.verticalLayout_40.addWidget(self.edt_tk_xoa_vt)
+        self.horizontalLayout_36.addWidget(self.frame_25)
+        self.verticalLayout_39.addLayout(self.horizontalLayout_36)
+        self.frame_26 = QtWidgets.QFrame(parent=self.trang_xoa_van_tay)
+        self.frame_26.setMinimumSize(QtCore.QSize(400, 140))
+        self.frame_26.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_26.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_26.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_26.setObjectName("frame_26")
+        self.horizontalLayout_37 = QtWidgets.QHBoxLayout(self.frame_26)
+        self.horizontalLayout_37.setObjectName("horizontalLayout_37")
+        self.btn_trang_chu_xoa_vt = QtWidgets.QPushButton(parent=self.frame_26)
+        self.btn_trang_chu_xoa_vt.setMaximumSize(QtCore.QSize(110, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_trang_chu_xoa_vt.setFont(font)
+        self.btn_trang_chu_xoa_vt.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 0, 50);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(109, 109, 109);\n"
+"    \n"
+"    \n"
+"}\n"
+"")
+        self.btn_trang_chu_xoa_vt.setObjectName("btn_trang_chu_xoa_vt")
+        self.horizontalLayout_37.addWidget(self.btn_trang_chu_xoa_vt)
+        self.btn_xoa_vt = QtWidgets.QPushButton(parent=self.frame_26)
+        self.btn_xoa_vt.setMaximumSize(QtCore.QSize(120, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_xoa_vt.setFont(font)
+        self.btn_xoa_vt.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(80, 0, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_xoa_vt.setObjectName("btn_xoa_vt")
+        self.horizontalLayout_37.addWidget(self.btn_xoa_vt)
+        self.verticalLayout_39.addWidget(self.frame_26)
+        spacerItem38 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_39.addItem(spacerItem38)
+        self.horizontalLayout_35.addLayout(self.verticalLayout_39)
+        spacerItem39 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_35.addItem(spacerItem39)
+        self.gridLayout_10.addLayout(self.horizontalLayout_35, 0, 0, 1, 1)
+        self.stackedWidget.addWidget(self.trang_xoa_van_tay)
+        self.trang_them_face_id = QtWidgets.QWidget()
+        self.trang_them_face_id.setObjectName("trang_them_face_id")
+        self.gridLayout_11 = QtWidgets.QGridLayout(self.trang_them_face_id)
+        self.gridLayout_11.setObjectName("gridLayout_11")
+        self.horizontalLayout_38 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_38.setObjectName("horizontalLayout_38")
+        spacerItem40 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_38.addItem(spacerItem40)
+        self.verticalLayout_41 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_41.setObjectName("verticalLayout_41")
+        spacerItem41 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_41.addItem(spacerItem41)
+        self.horizontalLayout_39 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_39.setObjectName("horizontalLayout_39")
+        self.frame_27 = QtWidgets.QFrame(parent=self.trang_them_face_id)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_27.sizePolicy().hasHeightForWidth())
+        self.frame_27.setSizePolicy(sizePolicy)
+        self.frame_27.setMinimumSize(QtCore.QSize(0, 0))
+        self.frame_27.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_27.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_27.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_27.setObjectName("frame_27")
+        self.verticalLayout_42 = QtWidgets.QVBoxLayout(self.frame_27)
+        self.verticalLayout_42.setObjectName("verticalLayout_42")
+        self.label_45 = QtWidgets.QLabel(parent=self.frame_27)
+        self.label_45.setMinimumSize(QtCore.QSize(278, 50))
+        self.label_45.setMaximumSize(QtCore.QSize(16777215, 50))
+        font = QtGui.QFont()
+        font.setFamily("Tahoma")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_45.setFont(font)
+        self.label_45.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_45.setObjectName("label_45")
+        self.verticalLayout_42.addWidget(self.label_45)
+        self.label_46 = QtWidgets.QLabel(parent=self.frame_27)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_46.sizePolicy().hasHeightForWidth())
+        self.label_46.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.label_46.setFont(font)
+        self.label_46.setObjectName("label_46")
+        self.verticalLayout_42.addWidget(self.label_46)
+        self.edt_tk_them_face = QtWidgets.QLineEdit(parent=self.frame_27)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.edt_tk_them_face.sizePolicy().hasHeightForWidth())
+        self.edt_tk_them_face.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Arial,sans-serif")
+        font.setPointSize(-1)
+        self.edt_tk_them_face.setFont(font)
+        self.edt_tk_them_face.setStyleSheet("QLineEdit {\n"
+"                border: 2px solid black;\n"
+"                border-radius: 10px;\n"
+"                padding: 10px;\n"
+"                background-color: #f5f5f5;\n"
+"                color: #333;\n"
+"                font-family: Arial, sans-serif;\n"
+"                font-size: 14px;\n"
+"            }\n"
+"            QLineEdit:focus {\n"
+"                border: 2px solid black;\n"
+"            }")
+        self.edt_tk_them_face.setObjectName("edt_tk_them_face")
+        self.verticalLayout_42.addWidget(self.edt_tk_them_face)
+        self.horizontalLayout_39.addWidget(self.frame_27)
+        self.verticalLayout_41.addLayout(self.horizontalLayout_39)
+        self.frame_28 = QtWidgets.QFrame(parent=self.trang_them_face_id)
+        self.frame_28.setMinimumSize(QtCore.QSize(400, 140))
+        self.frame_28.setStyleSheet("border-color: rgb(0, 0, 0);\n"
+"background-color: rgb(216, 216, 216);\n"
+"border-radius: 20px;")
+        self.frame_28.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame_28.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame_28.setObjectName("frame_28")
+        self.horizontalLayout_40 = QtWidgets.QHBoxLayout(self.frame_28)
+        self.horizontalLayout_40.setObjectName("horizontalLayout_40")
+        self.btn_trang_chu_them_face = QtWidgets.QPushButton(parent=self.frame_28)
+        self.btn_trang_chu_them_face.setMaximumSize(QtCore.QSize(110, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_trang_chu_them_face.setFont(font)
+        self.btn_trang_chu_them_face.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(0, 0, 50);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(109, 109, 109);\n"
+"    \n"
+"    \n"
+"}\n"
+"")
+        self.btn_trang_chu_them_face.setObjectName("btn_trang_chu_them_face")
+        self.horizontalLayout_40.addWidget(self.btn_trang_chu_them_face)
+        self.btn_them_vt_them_2 = QtWidgets.QPushButton(parent=self.frame_28)
+        self.btn_them_vt_them_2.setMaximumSize(QtCore.QSize(120, 50))
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        self.btn_them_vt_them_2.setFont(font)
+        self.btn_them_vt_them_2.setStyleSheet("QPushButton {\n"
+"    background-color: rgb(80, 0, 0);\n"
+"    color: rgb(255, 255, 255);\n"
+"    border-radius: 15px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: green;\n"
+"}\n"
+"")
+        self.btn_them_vt_them_2.setObjectName("btn_them_vt_them_2")
+        self.horizontalLayout_40.addWidget(self.btn_them_vt_them_2)
+        self.verticalLayout_41.addWidget(self.frame_28)
+        spacerItem42 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_41.addItem(spacerItem42)
+        self.horizontalLayout_38.addLayout(self.verticalLayout_41)
+        spacerItem43 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_38.addItem(spacerItem43)
+        self.gridLayout_11.addLayout(self.horizontalLayout_38, 0, 0, 1, 1)
+        self.stackedWidget.addWidget(self.trang_them_face_id)
         self.gridLayout.addWidget(self.stackedWidget, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(parent=MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1122, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1098, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
@@ -1213,7 +1900,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1231,6 +1918,10 @@ class Ui_MainWindow(object):
         self.btn_face_dn.setText(_translate("MainWindow", "FACE ID"))
         self.btn_xn_dn.setText(_translate("MainWindow", "Xác nhận"))
         self.btn_dk_dn.setText(_translate("MainWindow", "Đăng ký"))
+        self.label_47.setText(_translate("MainWindow", "Xóa Face ID"))
+        self.label_48.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.btn_trang_chu_xoa_face.setText(_translate("MainWindow", "Trang chủ"))
+        self.btn_xoa_face.setText(_translate("MainWindow", "Xóa Face ID"))
         self.label_15.setText(_translate("MainWindow", "Đổi mật khẩu"))
         self.label_16.setText(_translate("MainWindow", "Tài khoản"))
         self.label_17.setText(_translate("MainWindow", "Mật khẩu cũ"))
@@ -1263,3 +1954,20 @@ class Ui_MainWindow(object):
         self.label_14.setText(_translate("MainWindow", "Tài khoản (email)"))
         self.btn_dn_quen.setText(_translate("MainWindow", "Đăng nhập"))
         self.btn_xn_clmk.setText(_translate("MainWindow", "Cấp lại mật khẩu"))
+        self.label_20.setText(_translate("MainWindow", "Đổi vân tay"))
+        self.label_21.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.btn_dn_doi_vt.setText(_translate("MainWindow", "Đăng nhập"))
+        self.btn_xn_doi_vt.setText(_translate("MainWindow", "Đổi vân tay"))
+        self.btn_them_vt_doi_vt.setText(_translate("MainWindow", "Thêm vân tay"))
+        self.label_41.setText(_translate("MainWindow", "Thêm vân tay"))
+        self.label_42.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.btn_trang_chu_them_van_tay.setText(_translate("MainWindow", "Trang chủ"))
+        self.btn_them_vt_them.setText(_translate("MainWindow", "Thêm vân tay"))
+        self.label_43.setText(_translate("MainWindow", "Xóa vân tay"))
+        self.label_44.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.btn_trang_chu_xoa_vt.setText(_translate("MainWindow", "Trang chủ"))
+        self.btn_xoa_vt.setText(_translate("MainWindow", "Xóa vân tay"))
+        self.label_45.setText(_translate("MainWindow", "Thêm Face ID"))
+        self.label_46.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.btn_trang_chu_them_face.setText(_translate("MainWindow", "Trang chủ"))
+        self.btn_them_vt_them_2.setText(_translate("MainWindow", "ThêmFace ID"))

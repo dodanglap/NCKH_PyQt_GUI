@@ -3,7 +3,7 @@ sys.path.append('/home/lapdo/NCKH/lib/python3.11/site-packages')
 
 
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QSize, QTimer
-from PyQt6.QtWidgets import QLabel, QPushButton, QGridLayout, QTableWidgetItem,QLineEdit, QApplication, QMainWindow, QMessageBox, QFileDialog
+from PyQt6.QtWidgets import QLabel, QPushButton, QGridLayout, QTableWidgetItem,QLineEdit, QApplication, QMainWindow, QMessageBox, QFileDialog, QDialog
 from PyQt6.QtGui import QBrush, QColor, QFont, QIcon, QPixmap, QImage
 from gui_main import Ui_MainWindow
 from datetime import datetime
@@ -12,6 +12,7 @@ import cv2
 import cam_bien_van_tay as vt
 import time, random
 import emailPython
+import dialog
 
 # Khởi tạo firebase
 from firebase import firebase
@@ -44,7 +45,7 @@ class FingerPrintThread(QThread):
             print("Thread van tay")
             
             idVt_thanh_cong, stateFind_FingerPrint = self.get_fingerprint_id()
-            
+            print(stateFind_FingerPrint)
             # Lấy danh sách vân tay
             
             
@@ -53,12 +54,15 @@ class FingerPrintThread(QThread):
                 self.signal_van_tay_dang_nhap_hop_le.emit()
                 
                 break
+            elif stateFind_FingerPrint == "Khong":
+                self.signal_van_tay_that_bai.emit("Vân tay", "Kết nối cảm biến và khởi động lại hệ thống")
+                break
             elif stateFind_FingerPrint == False:
                 if dang_xuat == 0:
                     self.signal_van_tay_that_bai.emit("Đăng nhập", "Đăng nhập Vân tay Không thành công") # truyền tín hiệu tới
                 else:
                     dang_xuat = 0
-            time.sleep(1.5)
+            time.sleep(0.5)
                     
             
             
@@ -73,7 +77,7 @@ class FingerPrintThread(QThread):
             idVt, state_find = vt.find_van_tay()
             return idVt, state_find
         except:
-            return 0, False
+            return 0, "Khong"
         
 
 
@@ -126,6 +130,12 @@ class MainWindow(QMainWindow):
         self.tin_hieu_trang_chinh = False
         self.tin_hieu_trang_doi_mat_khau = False
         self.tin_hieu_trang_quen_mat_khau = False
+        self.tin_hieu_trang_doi_van_tay = False
+        self.tin_hieu_trang_them_van_tay = False
+        self.tin_hieu_trang_xoa_van_tay = False
+        self.tin_hieu_trang_them_face = False
+        self.tin_hieu_trang_xoa_face = False
+        
         
         # Setup trang đăng nhập đầu tiên
         self.vao_trang_dang_nhap()
@@ -150,6 +160,7 @@ class MainWindow(QMainWindow):
             self.uic.btn_face_dn.clicked.connect(self.start_Face_ID_dang_nhap)
             self.uic.btn_quen_mk_dn.clicked.connect(self.trang_quen_mat_khau)
             self.uic.btn_doi_mk_dn.clicked.connect(self.trang_doi_mat_khau)
+            
             self.tin_hieu_dang_nhap = True 
         
         self.uic.cb_mk_dn.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mk_dn, self.uic.Edt_mk_dn))
@@ -172,22 +183,22 @@ class MainWindow(QMainWindow):
         # dsFace = get_all_info_database(urlUser, 3)
         
         # Lấy thông tin đăng nhập
-        self.tkDn = self.uic.Edt_tk_dn.text()
+        self.tkDN = self.uic.Edt_tk_dn.text()
         self.mkDn = self.uic.Edt_mk_dn.text()
         idVt = self.uic.lb_vt_dn.text()
         idFace = self.uic.lb_id_face_dn.text()
         
-        if (self.tkDn == "" and self.mkDn == "" and idVt == ""):
+        if (self.tkDN == "" and self.mkDn == "" and idVt == ""):
             showMessageBox("Đăng nhập", "Đăng Nhập không thành công\nĐăng nhập bằng tài khoản/ Quét vân tay")
             
         # Trường họp đăng nhập bằng tk mk
-        elif (self.tkDn != "" and self.mkDn != ""): 
+        elif (self.tkDN != "" and self.mkDn != ""): 
             
             print("Đăng nhập bằng tài khoản")
-            if self.tkDn not in self.dsTK:
+            if self.tkDN not in self.dsTK:
                 showMessageBox("Đăng Nhập", "Không tồn tại tài khoản")
             else:
-                index_tkDn = self.dsTK.index(self.tkDn)
+                index_tkDn = self.dsTK.index(self.tkDN)
                 if self.mkDn == self.dsMk[index_tkDn]:
                     
                     # Đăng nhập thành công
@@ -242,12 +253,10 @@ class MainWindow(QMainWindow):
     
     # ==============================================Hàm trang đăng ký==================================================
     def trang_dang_ky(self):
-        global tt_Webcam
-        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_ky)
-        self.thread_van_tay.stop()
-        if tt_Webcam == "Bật":
-            self.thread_webcam_face.stop()
         
+        self.stop_thread_camera_finger()
+        
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_ky)
         if self.tin_hieu_dang_ky == False:
             self.uic.btn_ql_dn.clicked.connect(self.vao_trang_dang_nhap)
             self.uic.btn_xn_dk.clicked.connect(self.xac_nhan_dang_ky)
@@ -273,20 +282,25 @@ class MainWindow(QMainWindow):
             showMessageBox("Đăng ký", "Bạn phải nhập TK/MK")
         else:
             listIDVanTay = get_all_info_database(urlUser, 2)
+            print(listIDVanTay)
             if 'None' in listIDVanTay:
                 listIDVanTay.remove('None')
             
             listUser = get_all_info_database(urlUser, 0) # Lấy ra danh sách tài khoản
             self.idNewUsers = f'User {len(listUser) + 1}'
             state_tk_van_tay_dki = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
-            if state_tk_van_tay_dki == True:
-                # Bắt đầu add
-                try:
+            print(state_tk_van_tay_dki)
+            try:
+                if state_tk_van_tay_dki == True:
+                    # Bắt đầu add
+                    
                     stateAdd = vt.save_van_tay(list_van_tay= listIDVanTay)
                     print('tt ADD: ', stateAdd)
                     
                     if stateAdd == False:
                         showMessageBox("Đăng ký", "Đăng ký không thành công")
+                    elif stateAdd == "Khong":
+                        showMessageBox("Vân tay", "Lỗi Kết nối cảm biến và khởi động lại hệ thống")
                     else:
                         # Hỏi người dùng có thêm face id không
                         # Có -> trở về tiếp tục đăng ký
@@ -308,8 +322,10 @@ class MainWindow(QMainWindow):
                             firebase.put(urlUser, self.idNewUsers, listNewInfoUser)
                             self.clear_trang_dang_ky()
                             showMessageBox("Đăng ký", "Bạn đăng ký TK và Vân tay thành công")
-                except:
-                    showMessageBox("Vân tay", "Lỗi cảm biến vân tay")
+                else:
+                    showMessageBox("Đăng ký", state_tk_van_tay_dki)
+            except:
+                showMessageBox("Vân tay", "Lỗi cảm biến vân tay")
         
 
     
@@ -323,12 +339,17 @@ class MainWindow(QMainWindow):
         self.mkDki = self.uic.edt_mk_dk.text()
         self.mkDkiLai = self.uic.edt_mkl_dk.text()
         
-        
+        dsTK = get_all_info_database(urlUser, 0)
         # Bắt buộc phải đăng ký tài khoản và mật khẩu
         # Vân tay và Face ID nếu có
         
         state_dang_ky_tk = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
         if state_dang_ky_tk == True:
+            thong_tin_dki = [self.tkDki, self.mkDki]
+            
+            idNewUsers = f'User {len(dsTK) + 1}'
+            listNewInfoUser = [self.tkDki, self.mkDki, 'None', 'None'] # tk mk vantay face
+            firebase.put(urlUser, idNewUsers, listNewInfoUser)
             self.clear_trang_dang_ky()
             showMessageBox("Thông báo", "Đăng ký tài khoản thành công")
         else:
@@ -391,12 +412,21 @@ class MainWindow(QMainWindow):
                 tt_may.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 gridLayoutTB.addWidget(tt_may, 2, i)
                 
-                self.tin_hieu_trang_chinh = True
+                btn_may.clicked.connect(lambda checked, b = btn_may: self.on_button_may_clicked(b))
                 
+
             # Áp dụng layout cho widget chính
             self.uic.fram_thiet_bi.setLayout(gridLayoutTB)
+            
+            self.list_item_option = ["Không", "Đổi vân tay", "Thêm vân tay", "Xóa vân tay", "Thêm Face ID", "Xóa Face ID"]
+            
+            for item in self.list_item_option:
+                self.uic.combo_option_tk.addItem(item)
+                
+            self.uic.combo_option_tk.currentTextChanged.connect(self.open_combo_option)
+            self.tin_hieu_trang_chinh = True
 
-        
+        self.uic.combo_option_tk.setCurrentText(self.list_item_option[0])
         
         #Truy xuất ra tk dang nhap bang van tay
         listIDVanTay = get_all_info_database(urlUser, 2)
@@ -404,22 +434,47 @@ class MainWindow(QMainWindow):
         
         if idVt_thanh_cong != 0:
             index_tk = listIDVanTay.index(idVt_thanh_cong)
-            tkDN = self.dsTK[index_tk]
-            self.uic.lb_tk_dn.setText(tkDN)
+            dstk = get_all_info_database(urlUser, 0)
+            self.tkDN = dstk[index_tk]
+            self.uic.lb_tk_dn.setText(self.tkDN)
         else:
-            self.uic.lb_tk_dn.setText(self.tkDn)
+            self.uic.lb_tk_dn.setText(self.tkDN)
 
         self.uic.lb_tk_dn.adjustSize()
+    
+    
+    
+    def open_combo_option(self):
+        itemChoosed = self.uic.combo_option_tk.currentText()
+        if itemChoosed == self.list_item_option[1]:
+            self.trang_doi_van_tay()
         
+        elif itemChoosed == self.list_item_option[2]:
+            self.trang_them_van_tay()
+        
+        elif itemChoosed == self.list_item_option[3]:
+            self.trang_xoa_van_tay()
+        elif itemChoosed == self.list_item_option[4]:
+            self.trang_them_face()
+        elif itemChoosed == self.list_item_option[5]:
+            self.trang_xoa_face()
+        
+        
+    
+    def on_button_may_clicked(self, button):
+        formatDateTime = "dd/MM/yyyy HH:mm:ss"
+        dialog_choose_time = dialog.CustomDialog(self)
+        if dialog_choose_time.exec() == QDialog.DialogCode.Accepted:
+            start_time = dialog_choose_time.date_time_start.dateTime().toString(formatDateTime)
+            print(f"Start: {button.text()}", start_time)
+            end_time = dialog_choose_time.date_time_end.dateTime().toString(formatDateTime)
+            print(f"End: {button.text()}", end_time)
+        else:
+            dialog_choose_time.close()    
     ################################ TRANG QUÊN MẬT KHẨU###########################
     def trang_quen_mat_khau(self):
         # He thong se gui mat khau moi ve email cua ban
-        
-        
-        
-        self.thread_van_tay.stop()
-        if tt_Webcam == "Bật":
-            self.thread_webcam_face.stop()
+        self.stop_thread_camera_finger()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_quen_mk)    
         
         
@@ -432,14 +487,14 @@ class MainWindow(QMainWindow):
         
     
     
+
+    
     #################################### TRANG ĐỔI MẬT KHẨU ########################
     def trang_doi_mat_khau(self):
         global dang_xuat
         
         dang_xuat = 2
-        self.thread_van_tay.stop()
-        if tt_Webcam == "Bật":
-            self.thread_webcam_face.stop()
+        self.stop_thread_camera_finger()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_doi_mk)
         
         if self.tin_hieu_trang_doi_mat_khau == False:
@@ -488,7 +543,145 @@ class MainWindow(QMainWindow):
             showMessageBox("Thông báo", "Vui lòng nhập đầy đủ thông tin")
         
     
+    ################################ HÀM TRANG ĐỔI VÂN TAY##################################
     
+    def trang_doi_van_tay(self):
+        global dang_xuat
+        dang_xuat = 2
+        self.stop_thread_camera_finger()
+        
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_doi_van_tay)
+        #self.uic.
+        if self.tin_hieu_trang_doi_van_tay == False:
+            self.uic.btn_dn_doi_vt.clicked.connect(self.vao_trang_dang_nhap)
+            self.uic.btn_xn_doi_vt.clicked.connect(self.xac_nhan_doi_van_tay)
+            self.uic.btn_them_vt_doi_vt.clicked.connect(self.trang_them_van_tay)
+            self.tin_hieu_trang_doi_van_tay = True
+        
+        
+    def xac_nhan_doi_van_tay(self):
+        tkdvt = self.uic.edt_tk_doi_vt.text()
+        
+        if len(tkdvt) > 0:
+            
+            dsTk = get_all_info_database(urlUser, 0)
+            dsVt = get_all_info_database(urlUser, 2)
+            dsMk = get_all_info_database(urlUser, 1)
+        
+            if tkdvt in dsTk:
+                if self.tkDN == tkdvt:
+                    # Nếu chưa có thì save cái mới
+                    index_tk = dsTk.index(tkdvt)
+                    name_user = f"User {index_tk}"
+                    if dsVt[index_tk] == "None":
+                        showMessageBox("Vân tay", "Hệ thống đang thêm mới vân tay")
+                        state_add = vt.save_van_tay(dsVt)
+                        if state_add == False:
+                            showMessageBox("Vân tay", "Thêm vân tay không thành công")
+                        elif state_add == "Khong":
+                            showMessageBox("Vân tay", "Lỗi kết nối cảm biến")
+                        else:
+                            showMessageBox("Vân tay", "Thêm vân tay thành công")
+                            newIDVt = len(dsVt) + 1
+                            listNewInfoUser = [tkdvt, mktk, newIDVt, 'None'] # tk mk vantay face
+                            firebase.put(urlUser, name_user, listNewInfoUser)
+                    else:
+                        # Nếu có -> tìm vân tay -> xóa bỏ id trong cảm biến -> quét lại và save với đúng id đó
+                        # Xóa bỏ vân tay cũ
+                        state_xoa = vt.remove_van_tay() # Khong, True, False
+                        if state_xoa == "Khong":
+                            showMessageBox("Vân tay", "Lỗi kết nối cảm biến")
+                        elif state_xoa == False:
+                            showMessageBox("Vân tay", "Sai vân tay")
+                        else:
+                            showMessageBox("Vân tay", "Xóa vân tay cũ thành công")
+                            showMessageBox("Vân tay", "Bắt đầu thực hiện quét vân tay mới")
+                            state_add = vt.save_van_tay(int(dsVt[index_tk]))
+                            if state_add == "Khong":
+                                showMessageBox("Vân tay", "Lỗi kết nối vân tay")
+                            elif state_add == False:
+                                showMessageBox("Vân tay", "Lỗi quét vân tay")
+                            else:
+                                showMessageBox("Vân tay", "Đổi vân tay thành công")  
+                else:   
+                    showMessageBox("Vân tay", "Bạn phải nhập đúng tài khoản của bạn")
+            else:
+                showMessageBox("Vân tay", "Tài khoản không tồn tại")
+        else:
+            showMessageBox("Vân tay", "Nhập tài khoản của bạn")
+    
+    
+    
+    ############################## HàM TRANG THEM VAN TAY#################################
+    def trang_them_van_tay(self):
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_them_van_tay)
+        
+        if self.tin_hieu_trang_them_van_tay == False:
+            self.uic.btn_trang_chu_them_van_tay.clicked.connect(self.trang_chinh)
+            self.uic.btn_them_vt_them.clicked.connect(self.xac_nhan_them_van_tay)
+            self.tin_hieu_trang_them_van_tay = True
+        
+    
+    def xac_nhan_them_van_tay(self):    
+        tkThemVanTay = self.uic.edt_tk_them_vt.text()
+        dsTk = get_all_info_database(urlUser, 0)
+        dsVt = get_all_info_database(urlUser, 2)
+        print("dsVt: ", dsVt)
+        dsMk = get_all_info_database(urlUser, 1)
+        dsFace = get_all_info_database(urlUser, 3)
+        
+        if len(tkThemVanTay) > 0:
+            if self.tkDN == tkThemVanTay:
+                index_name = dsTk.index(tkThemVanTay)
+                
+                if dsVt[index_name] == "None":
+                    showMessageBox("Thông báo", "Bạn hãy đặt vân tay")
+                    dsVt = danh_sach_van_tay(dsVt)
+                    print("Them", dsVt)
+                    state_add = vt.save_van_tay(dsVt)
+                    if state_add == "Khong":
+                        showMessageBox("Vân tay", "Lỗi kết nối vân tay")
+                    elif state_add == False:
+                        showMessageBox("Vân tay", "Lỗi quét vân tay")
+                    else:
+                        
+                        firebase.put(urlUser, f"User {index_name}", [tkThemVanTay, dsMk[index_name], len(dsVt) + 1, dsFace[index_name]]) 
+                        showMessageBox("Vân tay", "Thêm vân tay thành công")
+                else:
+                    showMessageBox("Thông báo", "Bạn đã tồn tài vân tay")
+            else:
+                showMessageBox("Thông báo", "Bạn hãy nhập đúng tài khoản của bạn")
+        else:
+            showMessageBox("Vân tay", "Nhập tài khoản của bạn")
+    
+    
+    ######################### Ham Trang xoa van tay ###############################################
+    def trang_xoa_van_tay(self):
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_xoa_van_tay)
+        if self.tin_hieu_trang_xoa_van_tay == False:
+            self.uic.btn_trang_chu_xoa_vt.clicked.connect(self.trang_chinh)
+            self.tin_hieu_trang_xoa_van_tay = True
+    
+    ########################## TRANG THEM FACE #############################################
+    def trang_them_face(self):
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_them_face_id)
+        if self.tin_hieu_trang_them_face == False:
+            self.uic.btn_trang_chu_them_face.clicked.connect(self.trang_chinh)
+            self.tin_hieu_trang_them_face = True
+    
+    ##################################### Trang XOA FACE ##################################
+    def trang_xoa_face(self):
+        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_xoa_face_id)
+        if self.tin_hieu_trang_xoa_face == False:
+            self.uic.btn_trang_chu_xoa_face.clicked.connect(self.trang_chinh)
+            self.tin_hieu_trang_xoa_face = True
+    
+    ########################################## Các chuc nang khac################################
+    def stop_thread_camera_finger(self):
+        global tt_Webcam
+        self.thread_van_tay.stop()
+        if tt_Webcam == "Bật":
+            self.thread_webcam_face.stop()
         
     def clear_trang_dang_ky(self):
         self.uic.edt_tk_dk.clear()
@@ -546,7 +739,13 @@ class MainWindow(QMainWindow):
                 
             else:
                 showMessageBox("Thông báo", "Lỗi hệ thống gửi gmail")
+ 
+def danh_sach_van_tay(dsVT):
     
+    if "None" in dsVT:
+        dsVT.remove("None")
+    return dsVT
+
 def showMessageBox(title, content):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Icon.Information)
@@ -595,13 +794,7 @@ def check_dang_ky_tai_khoan(tkDki, mkDki, mkDkiLai):
                     else:
                         
                         print(tkDki, mkDki, mkDkiLai)
-                        thong_tin_dki = [tkDki, mkDki]
                         
-                        idNewUsers = f'User {len(dsTK) + 1}'
-                        listNewInfoUser = [tkDki, mkDki, 'None', 'None'] # tk mk vantay face
-                        firebase.put(urlUser, idNewUsers, listNewInfoUser)
-                        
-                        print("Thông tin đăng ký: ", thong_tin_dki)
                         return True
                 else:
                     return "Mật khẩu lớn hơn 8 ký tự"
