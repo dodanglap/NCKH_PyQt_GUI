@@ -1,5 +1,6 @@
 # Đẩy dữ liệu lên firebase (Cap nhat du lieu)
 from firebase import firebase
+import pandas as pd
 firebase = firebase.FirebaseApplication('https://fir-firebase-2eb50-default-rtdb.asia-southeast1.firebasedatabase.app', None)
 pK = '/Phong_khach'
 # led01 = '/LED01'
@@ -39,10 +40,35 @@ slMg = 2
 urlSlMs = "/So_luong_may_say"
 slMs = 2
 
-# firebase.put(urlSlTB, urlSlMg, slMg)
-# firebase.put(urlSlTB, urlSlMs, slMs)
-result = firebase.get(urlSlTB, None)
-print(sum(result.values()))
+urlLichHoatDong = "/Lich_hoat_dong"
+
+firebase.put(urlLichHoatDong, "0", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
+firebase.put(urlLichHoatDong, "1", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
+
+
+def danh_sach_lich_hoat_dong(urlLichHoatDong):
+    
+    result = firebase.get(urlLichHoatDong, None)
+    
+    print(result)
+    tkDatLich = []
+    tbiDatLich = []
+    ngayDatLich = []
+    tgianBatDau = []
+    tgianKetThuc = []
+    if result != None:
+        for i in range (len(result)):
+            tkDatLich.append(result[i][0])
+            tbiDatLich.append(result[i][1])
+            ngayDatLich.append(result[i][2])
+            tgianBatDau.append(result[i][3])
+            tgianKetThuc.append(result[i][4])
+    
+    dataFrame = pd.DataFrame({"Tài khoản": tkDatLich, "Thiết bị":tbiDatLich, "Ngày":ngayDatLich, 
+                              "Bắt đầu":tgianBatDau, "Kết thúc":tgianKetThuc})
+    return dataFrame
+
+print(danh_sach_lich_hoat_dong(urlLichHoatDong))
 # result_get = firebase.get(urlSlMg, None)
 
 # print(result_get == None)

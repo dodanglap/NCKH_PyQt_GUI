@@ -3,7 +3,7 @@ sys.path.append('/home/lapdo/NCKH/lib/python3.11/site-packages')
 
 
 from PyQt6.QtCore import Qt, QThread, pyqtSignal, QSize, QTimer
-from PyQt6.QtWidgets import QLabel, QPushButton, QGridLayout, QTableWidgetItem,QLineEdit, QApplication, QMainWindow, QMessageBox, QFileDialog, QDialog
+from PyQt6.QtWidgets import QLabel, QPushButton, QGridLayout, QTableWidgetItem, QLineEdit, QApplication, QMainWindow, QMessageBox, QFileDialog, QDialog
 from PyQt6.QtGui import QBrush, QColor, QFont, QIcon, QPixmap, QImage
 from gui_main import Ui_MainWindow
 from datetime import datetime
@@ -13,7 +13,7 @@ import cam_bien_van_tay as vt
 import time, random
 import emailPython
 import dialog
-
+import pandas as pd
 # Khởi tạo firebase
 from firebase import firebase
 firebase = firebase.FirebaseApplication('https://fir-firebase-2eb50-default-rtdb.asia-southeast1.firebasedatabase.app', None)
@@ -24,6 +24,7 @@ tt_Webcam = "Tắt"
 urlSlTB = "/So_luong_thiet_bi"
 urlSlMg = "/So_luong_may_giat"
 urlSlMs = "/So_luong_may_say"
+urlLichHoatDong = "/Lich_hoat_dong"
 
 idVt_thanh_cong = 0;
 dang_xuat = 0
@@ -287,7 +288,7 @@ class MainWindow(QMainWindow):
                 listIDVanTay.remove('None')
             
             listUser = get_all_info_database(urlUser, 0) # Lấy ra danh sách tài khoản
-            self.idNewUsers = f'User {len(listUser) + 1}'
+            self.idNewUsers = f'User {len(listUser)}'
             state_tk_van_tay_dki = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
             print(state_tk_van_tay_dki)
             try:
@@ -347,7 +348,7 @@ class MainWindow(QMainWindow):
         if state_dang_ky_tk == True:
             thong_tin_dki = [self.tkDki, self.mkDki]
             
-            idNewUsers = f'User {len(dsTK) + 1}'
+            idNewUsers = f'User {len(dsTK)}'
             listNewInfoUser = [self.tkDki, self.mkDki, 'None', 'None'] # tk mk vantay face
             firebase.put(urlUser, idNewUsers, listNewInfoUser)
             self.clear_trang_dang_ky()
@@ -433,14 +434,23 @@ class MainWindow(QMainWindow):
         
         
         if idVt_thanh_cong != 0:
-            index_tk = listIDVanTay.index(idVt_thanh_cong)
-            dstk = get_all_info_database(urlUser, 0)
-            self.tkDN = dstk[index_tk]
-            self.uic.lb_tk_dn.setText(self.tkDN)
+            if idVt_thanh_cong in listIDVanTay:
+                index_tk = listIDVanTay.index(idVt_thanh_cong)
+                dstk = get_all_info_database(urlUser, 0)
+                self.tkDN = dstk[index_tk]
+                self.uic.lb_tk_dn.setText(self.tkDN)
+            else:
+                self.uic.lb_tk_dn.setText(self.tkDN)
         else:
             self.uic.lb_tk_dn.setText(self.tkDN)
 
         self.uic.lb_tk_dn.adjustSize()
+        
+        # Bảng lịch hoạt động
+        labels_lich_hoat_dong = ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
+        data_lich_hoat_dong = danh_sach_lich_hoat_dong(urlLichHoatDong)
+        self.uic.tb_lich_hoat_dong = show_data_table(url = urlLichHoatDong, gui_table= self.uic.tb_lich_hoat_dong, labels=labels_lich_hoat_dong, dataFrame = data_lich_hoat_dong)
+
     
     
     
@@ -581,9 +591,10 @@ class MainWindow(QMainWindow):
                         elif state_add == "Khong":
                             showMessageBox("Vân tay", "Lỗi kết nối cảm biến")
                         else:
+                            dsVt = danh_sach_van_tay(dsVt)
                             showMessageBox("Vân tay", "Thêm vân tay thành công")
                             newIDVt = len(dsVt) + 1
-                            listNewInfoUser = [tkdvt, mktk, newIDVt, 'None'] # tk mk vantay face
+                            listNewInfoUser = [tkdvt, dsMk[index_tk], newIDVt, 'None'] # tk mk vantay face
                             firebase.put(urlUser, name_user, listNewInfoUser)
                     else:
                         # Nếu có -> tìm vân tay -> xóa bỏ id trong cảm biến -> quét lại và save với đúng id đó
@@ -595,6 +606,8 @@ class MainWindow(QMainWindow):
                             showMessageBox("Vân tay", "Sai vân tay")
                         else:
                             showMessageBox("Vân tay", "Xóa vân tay cũ thành công")
+                            listNewInfoUser = [tkdvt, dsMk[index_tk], "None", 'None'] # tk mk vantay face
+                            firebase.put(urlUser, name_user, listNewInfoUser)
                             showMessageBox("Vân tay", "Bắt đầu thực hiện quét vân tay mới")
                             state_add = vt.save_van_tay(int(dsVt[index_tk]))
                             if state_add == "Khong":
@@ -603,6 +616,8 @@ class MainWindow(QMainWindow):
                                 showMessageBox("Vân tay", "Lỗi quét vân tay")
                             else:
                                 showMessageBox("Vân tay", "Đổi vân tay thành công")  
+                                listNewInfoUser = [tkdvt, dsMk[index_tk], dsVt[index_tk], 'None'] # tk mk vantay face
+                                firebase.put(urlUser, name_user, listNewInfoUser)
                 else:   
                     showMessageBox("Vân tay", "Bạn phải nhập đúng tài khoản của bạn")
             else:
@@ -660,7 +675,40 @@ class MainWindow(QMainWindow):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_xoa_van_tay)
         if self.tin_hieu_trang_xoa_van_tay == False:
             self.uic.btn_trang_chu_xoa_vt.clicked.connect(self.trang_chinh)
+            self.uic.btn_xoa_vt.clicked.connect(self.xac_nhan_xoa_van_tay)
             self.tin_hieu_trang_xoa_van_tay = True
+            
+    def xac_nhan_xoa_van_tay(self):
+        tkxvt = self.uic.edt_tk_xoa_vt.text()
+        dsTk = get_all_info_database(urlUser, 0)
+        dsVt = get_all_info_database(urlUser, 2)
+        dsMk = get_all_info_database(urlUser, 1)
+        dsFace = get_all_info_database(urlUser, 3)
+        
+        if len(tkxvt) > 0:
+            if tkxvt in dsTk:
+                index_name = dsTk.index(tkxvt)
+                if tkxvt == self.tkDN:
+                    if dsVt[index_name] == "None":
+                        showMessageBox("Thông báo", "Tài khoản không tồn tại vân tay")
+                    else:
+                        showMessageBox("Thông báo", "Mời bạn quét vân tay")
+                        state_remove = vt.remove_van_tay()
+                        if state_remove == "Khong":
+                            showMessageBox("Thông báo", "Lỗi kết nối cảm biến")
+                    
+                        elif state_remove == False:
+                            showMessageBox("Thông báo", "Lỗi quét vân tay")
+                        else:
+                            
+                            firebase.put(urlUser, f"User {index_name}", [tkxvt, dsMk[index_name], "None", dsFace[index_name]])
+                            showMessageBox("Thông báo", "Xóa vân tay thành công")
+                else:
+                    showMessageBox("Thông báo", "Bạn hãy nhập đúng tài khoản của bạn")
+            else:
+                showMessageBox("Thông báo", "Tài khoản không tồn tại")
+        else:
+            showMessageBox("Thông báo", "Nhập tài khoản của bạn")
     
     ########################## TRANG THEM FACE #############################################
     def trang_them_face(self):
@@ -726,10 +774,7 @@ class MainWindow(QMainWindow):
             showMessageBox("Thông báo", "Tài khoản không tồn tại")
         else:
             rdNewMk = str(random.randint(10**6, 10**8))
-            
             replace_info_user = [tkClMk, rdNewMk, dsVT[index_tk], dsFace[index_tk]]
-            
-            
             state_send = emailPython.sendEmail(email_sender = "lap2003dodang@gmail.com", email_password = "jgsa mvte plxs ilqg", email_receiver = tkClMk, subject = "Cấp lại mật khẩu", body = rdNewMk) 
             if state_send == True:
                 showMessageBox("Thông báo", "Hệ thống đã gửi mật khẩu mới qua gmail của bạn")
@@ -740,6 +785,73 @@ class MainWindow(QMainWindow):
             else:
                 showMessageBox("Thông báo", "Lỗi hệ thống gửi gmail")
  
+ 
+
+# labels = ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
+def danh_sach_lich_hoat_dong(urlLichHoatDong):
+    
+    result = firebase.get(urlLichHoatDong, None)
+    
+    print(result)
+    tkDatLich = []
+    tbiDatLich = []
+    ngayDatLich = []
+    tgianBatDau = []
+    tgianKetThuc = []
+    
+    if result != None:
+        for i in range (len(result)):
+            tkDatLich.append(result[i][0])
+            tbiDatLich.append(result[i][1])
+            ngayDatLich.append(result[i][2])
+            tgianBatDau.append(result[i][3])
+            tgianKetThuc.append(result[i][4])
+            #trangThai.append(result[i][5])
+    dataFrame = pd.DataFrame({"Tài khoản": tkDatLich, "Thiết bị":tbiDatLich, "Ngày":ngayDatLich, 
+                              "Bắt đầu":tgianBatDau, "Kết thúc":tgianKetThuc})
+    return dataFrame
+
+#["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
+def danh_sach_bat_dat_lich(urlDatLichHT):
+    result = firebase.get(urlDatLichHT, None)
+    
+    tk
+
+def show_data_table( url, gui_table, labels, dataFrame):
+    # Lấy các cột của data đặt lịch:
+    numberColumn = len(labels)
+    
+    numberRow = len(dataFrame)
+    print("Data: ", dataFrame)
+    # data_lich_hoat = {"TK":, "Thiết bị":}
+    
+    # Thiết lập số hàng và cột cho bảng
+    gui_table.setRowCount(numberRow)
+    gui_table.setColumnCount(numberColumn)
+    
+    gui_table.setHorizontalHeaderLabels([str(lbl) for lbl in labels])
+    
+    print("Labels:", labels)
+    
+    print("Number of rows:", numberRow)
+    print("Updating table...")
+
+    # Điền dữ liệu vào bảng
+    for row in range(numberRow):
+        for col in range(numberColumn):
+            data_index = dataFrame.iloc[row][col]
+            item = QTableWidgetItem(str(data_index))
+            item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)  # Căn giữa
+            gui_table.setItem(row, col, item)
+            gui_table.setColumnWidth(col, 100)
+
+    # Thiết lập chiều rộng của bảng dựa trên số cột
+    total_width = numberColumn * 100
+    gui_table.setMaximumWidth(total_width+10)
+
+    return gui_table
+
+
 def danh_sach_van_tay(dsVT):
     
     if "None" in dsVT:
