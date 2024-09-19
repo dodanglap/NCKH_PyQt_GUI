@@ -27,9 +27,10 @@ pK = '/Phong_khach'
 
 
 
-# urlUser = "/Users"
-# user1 = "/User 1"
-# infoLogin = ["Đỗ Đăng Lập", "aaaaaaaaaaaaa", 1, 1]
+urlUser = "/Users"
+user1 = "/User 1"
+infoLogin = ["lapdodang@gmail.com", "12345678", "None", 1]
+firebase.put(urlUser, "User 0", infoLogin)
 
 # firebase.delete(urlUser, None)
 # result = firebase.put(urlUser, user1, infoLogin) 
@@ -42,33 +43,33 @@ slMs = 2
 
 urlLichHoatDong = "/Lich_hoat_dong"
 
-firebase.put(urlLichHoatDong, "0", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
-firebase.put(urlLichHoatDong, "1", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
+# firebase.put(urlLichHoatDong, "0", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
+# firebase.put(urlLichHoatDong, "1", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
 
 
-def danh_sach_lich_hoat_dong(urlLichHoatDong):
+# def danh_sach_lich_hoat_dong(urlLichHoatDong):
     
-    result = firebase.get(urlLichHoatDong, None)
+#     result = firebase.get(urlLichHoatDong, None)
     
-    print(result)
-    tkDatLich = []
-    tbiDatLich = []
-    ngayDatLich = []
-    tgianBatDau = []
-    tgianKetThuc = []
-    if result != None:
-        for i in range (len(result)):
-            tkDatLich.append(result[i][0])
-            tbiDatLich.append(result[i][1])
-            ngayDatLich.append(result[i][2])
-            tgianBatDau.append(result[i][3])
-            tgianKetThuc.append(result[i][4])
+#     print(result)
+#     tkDatLich = []
+#     tbiDatLich = []
+#     ngayDatLich = []
+#     tgianBatDau = []
+#     tgianKetThuc = []
+#     if result != None:
+#         for i in range (len(result)):
+#             tkDatLich.append(result[i][0])
+#             tbiDatLich.append(result[i][1])
+#             ngayDatLich.append(result[i][2])
+#             tgianBatDau.append(result[i][3])
+#             tgianKetThuc.append(result[i][4])
     
-    dataFrame = pd.DataFrame({"Tài khoản": tkDatLich, "Thiết bị":tbiDatLich, "Ngày":ngayDatLich, 
-                              "Bắt đầu":tgianBatDau, "Kết thúc":tgianKetThuc})
-    return dataFrame
+#     dataFrame = pd.DataFrame({"Tài khoản": tkDatLich, "Thiết bị":tbiDatLich, "Ngày":ngayDatLich, 
+#                               "Bắt đầu":tgianBatDau, "Kết thúc":tgianKetThuc})
+#     return dataFrame
 
-print(danh_sach_lich_hoat_dong(urlLichHoatDong))
+# print(danh_sach_lich_hoat_dong(urlLichHoatDong))
 # result_get = firebase.get(urlSlMg, None)
 
 # print(result_get == None)
@@ -83,6 +84,8 @@ print(danh_sach_lich_hoat_dong(urlLichHoatDong))
 #         danh_sach_kq.append(result_get[key][index_info])
         
 #     return danh_sach_kq
+
+
 
 
 

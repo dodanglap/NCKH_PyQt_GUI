@@ -9,25 +9,42 @@ from gui_main import Ui_MainWindow
 from datetime import datetime
 import numpy as np
 import cv2
-import cam_bien_van_tay as vt
+from cam_bien_van_tay import fingerPrint
 import time, random
 import emailPython
 import dialog
 import pandas as pd
+from datetime import datetime
+
 # Khởi tạo firebase
 from firebase import firebase
 firebase = firebase.FirebaseApplication('https://fir-firebase-2eb50-default-rtdb.asia-southeast1.firebasedatabase.app', None)
 
 urlUser = "/Users"
 tt_Webcam = "Tắt"
-
+tt_kn_Webcam = "Khong"
 urlSlTB = "/So_luong_thiet_bi"
 urlSlMg = "/So_luong_may_giat"
 urlSlMs = "/So_luong_may_say"
 urlLichHoatDong = "/Lich_hoat_dong"
 
 idVt_thanh_cong = 0;
+idFace_thanh_cong = 0;
+tt_kn_vt = 0
+dem_knvt_khong = 0
 dang_xuat = 0
+
+
+recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+recognizer.read('/home/lapdo/NCKH/FaceID/trainer/trainer_face.yml')
+
+cascadePath = "/home/lapdo/NCKH/FaceID/haarcascade_frontalface_default.xml"
+faceCascade = cv2.CascadeClassifier(cascadePath)
+
+font  = cv2.FONT_HERSHEY_SIMPLEX
+id = 0
+vt = fingerPrint()
 
 # Class Thread kiểm tra vân tay đăng nhập
 class FingerPrintThread(QThread):
@@ -41,29 +58,43 @@ class FingerPrintThread(QThread):
         self.running = True # Biến điều khiển Thread
         
     def run(self):
-        global tt_Webcam, idVt_thanh_cong, dang_xuat
+        global tt_Webcam, idVt_thanh_cong, dang_xuat, tt_kn_vt, dem_knvt_khong, vt
+        
         while self.running:
             print("Thread van tay")
-            
-            idVt_thanh_cong, stateFind_FingerPrint = self.get_fingerprint_id()
-            print(stateFind_FingerPrint)
-            # Lấy danh sách vân tay
-            
-            
-            if stateFind_FingerPrint == True:
-                # Nếu vân tay hợp lệ, phát tín hiệu để giao diện biết
-                self.signal_van_tay_dang_nhap_hop_le.emit()
+            if tt_kn_vt == 0:
+                idVt_thanh_cong, stateFind_FingerPrint = self.get_fingerprint_id()
                 
-                break
-            elif stateFind_FingerPrint == "Khong":
-                self.signal_van_tay_that_bai.emit("Vân tay", "Kết nối cảm biến và khởi động lại hệ thống")
-                break
-            elif stateFind_FingerPrint == False:
-                if dang_xuat == 0:
-                    self.signal_van_tay_that_bai.emit("Đăng nhập", "Đăng nhập Vân tay Không thành công") # truyền tín hiệu tới
-                else:
-                    dang_xuat = 0
-            time.sleep(0.5)
+                print(stateFind_FingerPrint)
+                # Lấy danh sách vân tay
+            
+                if stateFind_FingerPrint == True:
+                    # Nếu vân tay hợp lệ, phát tín hiệu để giao diện biết
+                    tt_kn_vt = 0
+                    
+                    self.signal_van_tay_dang_nhap_hop_le.emit()
+                    
+                    break
+                if stateFind_FingerPrint == "Khong":
+                    self.signal_van_tay_that_bai.emit("Đăng nhập", "Lỗi kết nối cảm biến vân tay")
+                    tt_kn_vt = 1
+                    
+
+                if stateFind_FingerPrint == False:
+                    tt_kn_vt = 0
+                   
+                    if dang_xuat == 0:
+                        self.signal_van_tay_that_bai.emit("Đăng nhập", "Đăng nhập Vân tay Không thành công") # truyền tín hiệu tới
+                    else:
+                        dang_xuat = 0
+            else:
+                try:
+                    print("Ket noi lai van tay...........")
+                    vt = fingerPrint()
+                    tt_kn_vt = 0
+                except Exception as e:
+                    print("Không thể kết nối lại cảm biến vân tay: ", str(e))
+            time.sleep(0.05)
                     
             
             
@@ -77,7 +108,8 @@ class FingerPrintThread(QThread):
             # Viết hàm quét vân tay
             idVt, state_find = vt.find_van_tay()
             return idVt, state_find
-        except:
+        except Exception as e:
+            print(e)
             return 0, "Khong"
         
 
@@ -86,29 +118,92 @@ class FingerPrintThread(QThread):
 class CaptureVideo(QThread):
     
     signal_captureVideo = pyqtSignal(np.ndarray)
+    signal_FaceID_dang_nhap_hop_le = pyqtSignal()
+    
     def __init__(self, parent = None):
         super(CaptureVideo, self).__init__(parent)
         global tt_Webcam
         self._running = True
+        self.state_face = "predict"
         
+        self.statusFalseFace = 0
 
+    
+    
     def run(self):
-        global tt_Webcam
+        global tt_Webcam, idFace_thanh_cong, tt_kn_Webcam
         tt_Webcam = "Bật"
-        cap = cv2.VideoCapture(0)
+        
+        with open("/home/lapdo/NCKH/FaceID/user.txt", "r") as f:
+            names = f.read()
+        f.close()
+        names = names.split("\n")[:-1]
+        print("Names: ", names)
+        
+        cap = cv2.VideoCapture("/dev/video0")
+
+        
         if not cap.isOpened():
             print("Không thể mở camera")
             tt_Webcam = "Tắt"
+            tt_kn_Webcam = "Khong"
             return
         
         while self._running and tt_Webcam == "Bật":
-            ret, cv_img = cap.read()
-            if ret:
-                tt_Webcam = "Bật"
-                self.signal_captureVideo.emit(cv_img)
+            
+            
+            if cap.isOpened():
+                ret, cv_img = cap.read()
+                tt_kn_Webcam = "Co"
+                if ret:
+                    tt_Webcam = "Bật"
+                    if self.state_face == "predict":
+                        self.statusTrueFace = 0
+                        gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
+                        faces = faceCascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5, minSize=(50,50))
+                        
+                        for (x,y,w,h) in faces:
+                            cv2.rectangle(cv_img, (x,y), (x+w, y+h), (0, 255, 0), 2)
+                            
+                            id, confidence = recognizer.predict(gray[y:y+h, x:x+w])
+                            if (confidence < 100):
+
+                                confidence = round(100 - confidence)
+                                print("confidence: ", confidence)
+
+                                id = names[id-1]
+
+                                cv2.putText(cv_img, str(id), (x+5, y-5), font, 1, (255, 255, 255), 2)
+
+                                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), font, 1, (255, 255, 0), 1)
+
+                                if (confidence > 15):
+
+                                    self.statusTrueFace += 1
+                                    print("ID TC: ", id)
+                                    idFace_thanh_cong = int(id)
+
+                                break
+                            else:
+                                id=0
+                                confidence = round(100-confidence)
+                                cv2.putText(cv_img, str(id), (x+5, y-5), font, 1, (255, 255, 255), 2)
+
+                                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), font, 1, (255, 255, 0), 1)
+                            
+                        if self.statusTrueFace != 0:
+                            print("Thanh cong")
+                            self.signal_FaceID_dang_nhap_hop_le.emit()
+                            break
+                             
+                    self.signal_captureVideo.emit(cv_img)
+                else:
+                    print("Ket noi lai camera......")
+                    cap = cv2.VideoCapture("/dev/video0")
+            
             else:
-                tt_Webcam = "Tắt"
-                break
+                print("Ket noi lai camera........")
+                cap = cv2.VideoCapture("/dev/video0")
             
         cap.release()
         print("đã tắt cam")
@@ -145,20 +240,19 @@ class MainWindow(QMainWindow):
     # ================================================= Trang đăng nhập ================================================ 
     def vao_trang_dang_nhap(self):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_nhap)
+        self.clear_trang_dang_nhap()
         # Khởi tạo thread kiểm tra vân tay
-        self.thread_van_tay = FingerPrintThread()
-        self.thread_van_tay.signal_van_tay_dang_nhap_hop_le.connect(self.dang_nhap_van_tay_thanh_cong)
+        self.start_Finger_Print()
         
-        self.thread_van_tay.signal_van_tay_that_bai.connect(self.show_message)
-
+        # Khoi tao thread Face ID
+        self.start_Face_ID_dang_nhap()
         
-        self.thread_van_tay.start()
         print("TK: ", self.uic.Edt_mk_dn.text())
         self.uic.btn_face_dn.setEnabled(True)
         if self.tin_hieu_dang_nhap == False: 
             self.uic.btn_xn_dn.clicked.connect(self.xac_nhan_dang_nhap)
             self.uic.btn_dk_dn.clicked.connect(self.trang_dang_ky)  
-            self.uic.btn_face_dn.clicked.connect(self.start_Face_ID_dang_nhap)
+            
             self.uic.btn_quen_mk_dn.clicked.connect(self.trang_quen_mat_khau)
             self.uic.btn_doi_mk_dn.clicked.connect(self.trang_doi_mat_khau)
             
@@ -171,6 +265,7 @@ class MainWindow(QMainWindow):
     # SHow mess đăng nhập VÂN TAY KHÔNG thành công
     def show_message(self, title, content):
         global tt_Webcam
+        
         showMessageBox(title, content)
         
         
@@ -212,14 +307,23 @@ class MainWindow(QMainWindow):
         
             
     # Hàm xử lý khi vân tay được xác nhận
-    def dang_nhap_van_tay_thanh_cong(self):
-        global tt_Webcam
-        print("Đăng Nhập", "Đăng Nhập bằng Vân tay thành công")
+    
+    def start_Finger_Print(self):
+        self.thread_van_tay = FingerPrintThread()
+        self.thread_van_tay.signal_van_tay_dang_nhap_hop_le.connect(self.dang_nhap_van_tay_thanh_cong)
+        self.thread_van_tay.signal_van_tay_that_bai.connect(self.show_message)
+        self.thread_van_tay.start()
         
-        time.sleep(1)
+    def dang_nhap_van_tay_thanh_cong(self):
+        
+        print("Đăng Nhập", "Đăng Nhập bằng Vân tay thành công")
+
         self.trang_chinh()
 
-
+    def Face_ID_thanh_cong(self):
+        print("Đăng Nhập", "Đăng Nhập Face ID thành công")
+        self.trang_chinh()
+        
     
     def start_Face_ID_dang_nhap(self):
         global tt_Webcam
@@ -228,6 +332,7 @@ class MainWindow(QMainWindow):
         self.thread_webcam_face = CaptureVideo()
         self.thread_webcam_face.start()
         self.thread_webcam_face.signal_captureVideo.connect(self.show_webcam)
+        self.thread_webcam_face.signal_FaceID_dang_nhap_hop_le.connect(self.Face_ID_thanh_cong)
     
             
     def show_webcam(self, cv_img):
@@ -254,7 +359,7 @@ class MainWindow(QMainWindow):
     
     # ==============================================Hàm trang đăng ký==================================================
     def trang_dang_ky(self):
-        
+        self.clear_trang_dang_ky()
         self.stop_thread_camera_finger()
         
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_ky)
@@ -283,10 +388,8 @@ class MainWindow(QMainWindow):
             showMessageBox("Đăng ký", "Bạn phải nhập TK/MK")
         else:
             listIDVanTay = get_all_info_database(urlUser, 2)
-            print(listIDVanTay)
-            if 'None' in listIDVanTay:
-                listIDVanTay.remove('None')
             
+            listIDVanTay = danh_sach_van_tay(listIDVanTay)
             listUser = get_all_info_database(urlUser, 0) # Lấy ra danh sách tài khoản
             self.idNewUsers = f'User {len(listUser)}'
             state_tk_van_tay_dki = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
@@ -359,7 +462,7 @@ class MainWindow(QMainWindow):
    
      ##################################### HÀM trang chính ################ 
     def trang_chinh(self):
-        global idVt_thanh_cong, dang_xuat
+        global idVt_thanh_cong, dang_xuat, idFace_thanh_cong
         dang_xuat = 2
         self.clear_trang_dang_ky()
         self.clear_trang_dang_nhap()
@@ -431,20 +534,32 @@ class MainWindow(QMainWindow):
         
         #Truy xuất ra tk dang nhap bang van tay
         listIDVanTay = get_all_info_database(urlUser, 2)
-        
-        
+        listIDFace = get_all_info_database(urlUser, 3)
+        print("ID Face:", listIDFace)
+        dstk = get_all_info_database(urlUser, 0)
         if idVt_thanh_cong != 0:
             if idVt_thanh_cong in listIDVanTay:
                 index_tk = listIDVanTay.index(idVt_thanh_cong)
-                dstk = get_all_info_database(urlUser, 0)
+                
                 self.tkDN = dstk[index_tk]
                 self.uic.lb_tk_dn.setText(self.tkDN)
-            else:
+            
+        
+        elif idFace_thanh_cong != 0:
+            if idFace_thanh_cong in listIDFace:
+                index_tk = listIDFace.index(idFace_thanh_cong)
+                self.tkDN = dstk[index_tk]
                 self.uic.lb_tk_dn.setText(self.tkDN)
+            
         else:
             self.uic.lb_tk_dn.setText(self.tkDN)
-
+        
+        # Truy xuat ra tk dang nhap bang face id
+        
+        
         self.uic.lb_tk_dn.adjustSize()
+        
+        
         
         # Bảng lịch hoạt động
         labels_lich_hoat_dong = ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
@@ -476,13 +591,17 @@ class MainWindow(QMainWindow):
         dialog_choose_time = dialog.CustomDialog(self)
         if dialog_choose_time.exec() == QDialog.DialogCode.Accepted:
             start_time = dialog_choose_time.date_time_start.dateTime().toString(formatDateTime)
-            print(f"Start: {button.text()}", start_time)
             end_time = dialog_choose_time.date_time_end.dateTime().toString(formatDateTime)
-            print(f"End: {button.text()}", end_time)
+            ttDL, tgDL = xac_nhan_dat_lich(start_time, end_time)
+            if ttDL == True:
+                showMessageBox("Dat lich", f"BD: {start_time} den : {end_time}")
+            else:
+                showMessageBox("Dat lich", "Khong thanh cong")
         else:
             dialog_choose_time.close()    
     ################################ TRANG QUÊN MẬT KHẨU###########################
     def trang_quen_mat_khau(self):
+        self.clear_trang_quen_mat_khau()
         # He thong se gui mat khau moi ve email cua ban
         self.stop_thread_camera_finger()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_quen_mk)    
@@ -493,16 +612,13 @@ class MainWindow(QMainWindow):
             self.uic.btn_xn_clmk.clicked.connect(self.cap_lai_mat_khau) 
             self.tin_hieu_trang_quen_mat_khau = True    
             # edt_tk_quenmk, btn_xn_clmk
-            
-        
-    
-    
+
 
     
     #################################### TRANG ĐỔI MẬT KHẨU ########################
     def trang_doi_mat_khau(self):
         global dang_xuat
-        
+        self.clear_trang_doi_mat_khau()
         dang_xuat = 2
         self.stop_thread_camera_finger()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_doi_mk)
@@ -559,13 +675,14 @@ class MainWindow(QMainWindow):
         global dang_xuat
         dang_xuat = 2
         self.stop_thread_camera_finger()
-        
+        self.clear_trang_doi_van_tay()
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_doi_van_tay)
         #self.uic.
         if self.tin_hieu_trang_doi_van_tay == False:
             self.uic.btn_dn_doi_vt.clicked.connect(self.vao_trang_dang_nhap)
             self.uic.btn_xn_doi_vt.clicked.connect(self.xac_nhan_doi_van_tay)
             self.uic.btn_them_vt_doi_vt.clicked.connect(self.trang_them_van_tay)
+            self.uic.btn_trang_chu_dvt.clicked.connect(self.trang_chinh)
             self.tin_hieu_trang_doi_van_tay = True
         
         
@@ -630,7 +747,7 @@ class MainWindow(QMainWindow):
     ############################## HàM TRANG THEM VAN TAY#################################
     def trang_them_van_tay(self):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_them_van_tay)
-        
+        self.clear_trang_them_van_tay()
         if self.tin_hieu_trang_them_van_tay == False:
             self.uic.btn_trang_chu_them_van_tay.clicked.connect(self.trang_chinh)
             self.uic.btn_them_vt_them.clicked.connect(self.xac_nhan_them_van_tay)
@@ -673,6 +790,7 @@ class MainWindow(QMainWindow):
     ######################### Ham Trang xoa van tay ###############################################
     def trang_xoa_van_tay(self):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_xoa_van_tay)
+        self.clear_trang_xoa_van_tay()
         if self.tin_hieu_trang_xoa_van_tay == False:
             self.uic.btn_trang_chu_xoa_vt.clicked.connect(self.trang_chinh)
             self.uic.btn_xoa_vt.clicked.connect(self.xac_nhan_xoa_van_tay)
@@ -713,6 +831,7 @@ class MainWindow(QMainWindow):
     ########################## TRANG THEM FACE #############################################
     def trang_them_face(self):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_them_face_id)
+        self.clear_trang_xoa_face()
         if self.tin_hieu_trang_them_face == False:
             self.uic.btn_trang_chu_them_face.clicked.connect(self.trang_chinh)
             self.tin_hieu_trang_them_face = True
@@ -720,6 +839,7 @@ class MainWindow(QMainWindow):
     ##################################### Trang XOA FACE ##################################
     def trang_xoa_face(self):
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_xoa_face_id)
+        self.clear_trang_xoa_face()
         if self.tin_hieu_trang_xoa_face == False:
             self.uic.btn_trang_chu_xoa_face.clicked.connect(self.trang_chinh)
             self.tin_hieu_trang_xoa_face = True
@@ -749,6 +869,21 @@ class MainWindow(QMainWindow):
         self.uic.edt_mk_moi.clear()
         self.uic.edt_xn_mkmoi.clear()
     
+    def clear_trang_doi_van_tay(self):
+        self.uic.edt_tk_doi_vt.clear()
+    
+    def clear_trang_them_van_tay(self):
+        self.uic.edt_tk_them_vt.clear()
+        
+    def clear_trang_xoa_van_tay(self):
+        self.uic.edt_tk_xoa_vt.clear()
+        
+    def clear_trang_them_face(self):
+        self.uic.edt_tk_them_face.clear()
+    
+    def clear_trang_xoa_face(self):
+        self.uic.edt_tk_xoa_face.clear()
+    
     def hidden_show_text(self, cb_edt, edt_text):
         
         if cb_edt.isChecked() == True:
@@ -774,7 +909,10 @@ class MainWindow(QMainWindow):
             showMessageBox("Thông báo", "Tài khoản không tồn tại")
         else:
             rdNewMk = str(random.randint(10**6, 10**8))
+            
             replace_info_user = [tkClMk, rdNewMk, dsVT[index_tk], dsFace[index_tk]]
+            
+            
             state_send = emailPython.sendEmail(email_sender = "lap2003dodang@gmail.com", email_password = "jgsa mvte plxs ilqg", email_receiver = tkClMk, subject = "Cấp lại mật khẩu", body = rdNewMk) 
             if state_send == True:
                 showMessageBox("Thông báo", "Hệ thống đã gửi mật khẩu mới qua gmail của bạn")
@@ -853,10 +991,11 @@ def show_data_table( url, gui_table, labels, dataFrame):
 
 
 def danh_sach_van_tay(dsVT):
-    
-    if "None" in dsVT:
-        dsVT.remove("None")
-    return dsVT
+    dsVtNew =[]
+    for item in dsVT:
+        if item != "None":
+            dsVtNew.append(item)
+    return dsVtNew
 
 def showMessageBox(title, content):
     msg = QMessageBox()
@@ -915,6 +1054,19 @@ def check_dang_ky_tai_khoan(tkDki, mkDki, mkDkiLai):
             return "Sai định dạng gmail tài khoản"
             
 
+def xac_nhan_dat_lich(batDau, ketThuc):
+    # chuyen doi chuoi thanh doi tuong datetime
+    batDau = datetime.strptime(batDau, "%d/%m/%Y %H:%M:%S")
+    ketThuc = datetime.strptime(ketThuc, "%d/%m/%Y %H:%M:%S")
+    
+    kTGDatLich = ketThuc - batDau
+    
+    if kTGDatLich.total_seconds() <= 0:
+        return False, "None"
+    else:
+        return True, kTGDatLich
+        
+    
 if __name__ == '__main__':
     app = QApplication([])
     main_win = MainWindow()
