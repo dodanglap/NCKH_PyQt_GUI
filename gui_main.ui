@@ -29,7 +29,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="trang_dang_nhap">
        <layout class="QGridLayout" name="gridLayout_3">
@@ -230,55 +230,6 @@ border-radius: 20px;</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QLabel" name="label_4">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Vân tay</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="lb_vt_dn">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Arial,sans-serif</family>
-                     <pointsize>-1</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </widget>
               </item>
@@ -309,43 +260,6 @@ border-radius: 20px;</string>
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <item>
-                  <widget class="QLabel" name="label_11">
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Khuôn mặt</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="lb_id_face_dn">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-
-</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                  </widget>
-                 </item>
                  <item>
                   <widget class="QLabel" name="lb_cam_dn">
                    <property name="minimumSize">
@@ -474,42 +388,6 @@ QPushButton:hover {
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btn_face_dn">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100</width>
-                   <height>50</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>11</pointsize>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton {
-    background-color: rgb(0, 90, 0);
-    color: rgb(255, 255, 255);
-    border-radius: 15px;
-}
-
-QPushButton:hover {
-    background-color: green;
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string>FACE ID</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="btn_xn_dn">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -620,154 +498,49 @@ QPushButton:hover {
        </layout>
       </widget>
       <widget class="QWidget" name="trang_xoa_face_id">
-       <layout class="QGridLayout" name="gridLayout_12">
+       <layout class="QGridLayout" name="gridLayout_11">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_41">
+         <spacer name="horizontalSpacer_37">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>316</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout_43">
           <item>
-           <spacer name="horizontalSpacer_37">
+           <spacer name="verticalSpacer_29">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>58</width>
-              <height>18</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_43">
+           <layout class="QHBoxLayout" name="horizontalLayout_42">
             <item>
-             <spacer name="verticalSpacer_29">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
+             <widget class="QFrame" name="frame_29">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_42">
-              <item>
-               <widget class="QFrame" name="frame_29">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">border-color: rgb(0, 0, 0);
-background-color: rgb(216, 216, 216);
-border-radius: 20px;</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_44">
-                 <item>
-                  <widget class="QLabel" name="label_47">
-                   <property name="minimumSize">
-                    <size>
-                     <width>278</width>
-                     <height>50</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>50</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Tahoma</family>
-                     <pointsize>16</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Xóa Face ID</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_48">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Tài khoản (email)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edt_tk_xoa_face">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Arial,sans-serif</family>
-                     <pointsize>-1</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QLineEdit {
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-            }
-            QLineEdit:focus {
-                border: 2px solid black;
-            }</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame_30">
               <property name="minimumSize">
                <size>
-                <width>400</width>
-                <height>140</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -781,22 +554,161 @@ border-radius: 20px;</string>
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_43">
+              <layout class="QVBoxLayout" name="verticalLayout_44">
                <item>
-                <widget class="QPushButton" name="btn_trang_chu_xoa_face">
-                 <property name="maximumSize">
+                <widget class="QLabel" name="label_47">
+                 <property name="minimumSize">
                   <size>
-                   <width>110</width>
+                   <width>278</width>
                    <height>50</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Tahoma</family>
+                   <pointsize>16</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Xóa Face ID</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_48">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="text">
+                  <string>Tài khoản (email)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="edt_tk_xoa_face">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial,sans-serif</family>
+                   <pointsize>-1</pointsize>
+                  </font>
+                 </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton {
+                  <string notr="true">QLineEdit {
+                border: 2px solid black;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #f5f5f5;
+                color: #333;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 2px solid black;
+            }</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="lb_cam_xoa">
+                 <property name="minimumSize">
+                  <size>
+                   <width>300</width>
+                   <height>300</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>300</width>
+                   <height>300</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>16</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">border: 2px solid black;</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::WinPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <property name="text">
+                  <string>Camera Face ID</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_30">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>140</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-color: rgb(0, 0, 0);
+background-color: rgb(216, 216, 216);
+border-radius: 20px;</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_43">
+             <item>
+              <widget class="QPushButton" name="btn_trang_chu_xoa_face">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     background-color: rgb(0, 0, 50);
     color: rgb(255, 255, 255);
     border-radius: 15px;
@@ -808,27 +720,27 @@ QPushButton:hover {
 	
 }
 </string>
-                 </property>
-                 <property name="text">
-                  <string>Trang chủ</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="btn_xoa_face">
-                 <property name="maximumSize">
-                  <size>
-                   <width>120</width>
-                   <height>50</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>11</pointsize>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton {
+               </property>
+               <property name="text">
+                <string>Trang chủ</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_xoa_face">
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     background-color: rgb(80, 0, 0);
     color: rgb(255, 255, 255);
     border-radius: 15px;
@@ -838,44 +750,42 @@ QPushButton:hover {
     background-color: green;
 }
 </string>
-                 </property>
-                 <property name="text">
-                  <string>Xóa Face ID</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_30">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>118</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+               </property>
+               <property name="text">
+                <string>Xóa Face ID</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_38">
+           <spacer name="verticalSpacer_30">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>58</width>
-              <height>18</height>
+              <width>20</width>
+              <height>118</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_38">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>316</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>
@@ -1558,55 +1468,6 @@ border-radius: 20px;</string>
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <widget class="QLabel" name="label_9">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>11</pointsize>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string>Vân tay</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="lb_vt_dki">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <family>Arial,sans-serif</family>
-                       <pointsize>-1</pointsize>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-
-</string>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                    </widget>
-                   </item>
                   </layout>
                  </widget>
                 </item>
@@ -1658,25 +1519,6 @@ border-radius: 20px;</string>
                      </property>
                      <property name="text">
                       <string>Khuôn mặt</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="lb_id_face_dki">
-                     <property name="styleSheet">
-                      <string notr="true">
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-
-</string>
-                     </property>
-                     <property name="text">
-                      <string/>
                      </property>
                     </widget>
                    </item>
@@ -1751,7 +1593,7 @@ border-radius: 20px;</string>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>130</width>
+                     <width>200</width>
                      <height>50</height>
                     </size>
                    </property>
@@ -1775,45 +1617,7 @@ QPushButton:hover {
 </string>
                    </property>
                    <property name="text">
-                    <string>Thêm vân tay</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btn_face_dk">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>130</width>
-                     <height>50</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-    background-color: rgb(60, 0, 0);
-    color: rgb(255, 255, 255);
-    border-radius: 15px;
-}
-
-QPushButton:hover {
-    background-color: rgb(109, 109, 109);
-	
-	
-}
-</string>
-                   </property>
-                   <property name="text">
-                    <string>Thêm Face ID</string>
+                    <string>Thêm vân tay/ Face ID</string>
                    </property>
                   </widget>
                  </item>
@@ -3432,154 +3236,49 @@ QPushButton:hover {
        </layout>
       </widget>
       <widget class="QWidget" name="trang_them_face_id">
-       <layout class="QGridLayout" name="gridLayout_11">
+       <layout class="QGridLayout" name="gridLayout_7">
         <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_38">
+         <spacer name="horizontalSpacer_35">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>316</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1">
+         <layout class="QVBoxLayout" name="verticalLayout_41">
           <item>
-           <spacer name="horizontalSpacer_35">
+           <spacer name="verticalSpacer_27">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>58</width>
-              <height>18</height>
+              <width>20</width>
+              <height>40</height>
              </size>
             </property>
            </spacer>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_41">
+           <layout class="QHBoxLayout" name="horizontalLayout_39">
             <item>
-             <spacer name="verticalSpacer_27">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
+             <widget class="QFrame" name="frame_27">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_39">
-              <item>
-               <widget class="QFrame" name="frame_27">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Maximum" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">border-color: rgb(0, 0, 0);
-background-color: rgb(216, 216, 216);
-border-radius: 20px;</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_42">
-                 <item>
-                  <widget class="QLabel" name="label_45">
-                   <property name="minimumSize">
-                    <size>
-                     <width>278</width>
-                     <height>50</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>50</height>
-                    </size>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Tahoma</family>
-                     <pointsize>16</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Thêm Face ID</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLabel" name="label_46">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <pointsize>11</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Tài khoản (email)</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="edt_tk_them_face">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font>
-                     <family>Arial,sans-serif</family>
-                     <pointsize>-1</pointsize>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QLineEdit {
-                border: 2px solid black;
-                border-radius: 10px;
-                padding: 10px;
-                background-color: #f5f5f5;
-                color: #333;
-                font-family: Arial, sans-serif;
-                font-size: 14px;
-            }
-            QLineEdit:focus {
-                border: 2px solid black;
-            }</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame_28">
               <property name="minimumSize">
                <size>
-                <width>400</width>
-                <height>140</height>
+                <width>0</width>
+                <height>0</height>
                </size>
               </property>
               <property name="styleSheet">
@@ -3593,22 +3292,161 @@ border-radius: 20px;</string>
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_40">
+              <layout class="QVBoxLayout" name="verticalLayout_42">
                <item>
-                <widget class="QPushButton" name="btn_trang_chu_them_face">
-                 <property name="maximumSize">
+                <widget class="QLabel" name="label_45">
+                 <property name="minimumSize">
                   <size>
-                   <width>110</width>
+                   <width>278</width>
                    <height>50</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Tahoma</family>
+                   <pointsize>16</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Thêm Face ID</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_46">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="text">
+                  <string>Tài khoản (email)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="edt_tk_them_face">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial,sans-serif</family>
+                   <pointsize>-1</pointsize>
+                  </font>
+                 </property>
                  <property name="styleSheet">
-                  <string notr="true">QPushButton {
+                  <string notr="true">QLineEdit {
+                border: 2px solid black;
+                border-radius: 10px;
+                padding: 10px;
+                background-color: #f5f5f5;
+                color: #333;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+            }
+            QLineEdit:focus {
+                border: 2px solid black;
+            }</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="lb_cam_them">
+                 <property name="minimumSize">
+                  <size>
+                   <width>300</width>
+                   <height>300</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>300</width>
+                   <height>300</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>16</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">border: 2px solid black;</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::WinPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <property name="text">
+                  <string>Camera Face ID</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_28">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>140</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-color: rgb(0, 0, 0);
+background-color: rgb(216, 216, 216);
+border-radius: 20px;</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_40">
+             <item>
+              <widget class="QPushButton" name="btn_trang_chu_them_face">
+               <property name="maximumSize">
+                <size>
+                 <width>110</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     background-color: rgb(0, 0, 50);
     color: rgb(255, 255, 255);
     border-radius: 15px;
@@ -3620,27 +3458,27 @@ QPushButton:hover {
 	
 }
 </string>
-                 </property>
-                 <property name="text">
-                  <string>Trang chủ</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="btn_them_vt_them_2">
-                 <property name="maximumSize">
-                  <size>
-                   <width>120</width>
-                   <height>50</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <pointsize>11</pointsize>
-                  </font>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">QPushButton {
+               </property>
+               <property name="text">
+                <string>Trang chủ</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btn_them_vt_them_2">
+               <property name="maximumSize">
+                <size>
+                 <width>120</width>
+                 <height>50</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
     background-color: rgb(80, 0, 0);
     color: rgb(255, 255, 255);
     border-radius: 15px;
@@ -3650,44 +3488,42 @@ QPushButton:hover {
     background-color: green;
 }
 </string>
-                 </property>
-                 <property name="text">
-                  <string>ThêmFace ID</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_28">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>118</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
+               </property>
+               <property name="text">
+                <string>ThêmFace ID</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_36">
+           <spacer name="verticalSpacer_28">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>58</width>
-              <height>18</height>
+              <width>20</width>
+              <height>118</height>
              </size>
             </property>
            </spacer>
           </item>
          </layout>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_36">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>316</width>
+            <height>18</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </widget>

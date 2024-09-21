@@ -15,7 +15,8 @@ import emailPython
 import dialog
 import pandas as pd
 from datetime import datetime
-
+import os
+from PIL import Image
 # Khởi tạo firebase
 from firebase import firebase
 firebase = firebase.FirebaseApplication('https://fir-firebase-2eb50-default-rtdb.asia-southeast1.firebasedatabase.app', None)
@@ -27,24 +28,23 @@ urlSlTB = "/So_luong_thiet_bi"
 urlSlMg = "/So_luong_may_giat"
 urlSlMs = "/So_luong_may_say"
 urlLichHoatDong = "/Lich_hoat_dong"
+urlFaceID = "/Face_ID"
 
 idVt_thanh_cong = 0;
 idFace_thanh_cong = 0;
 tt_kn_vt = 0
 dem_knvt_khong = 0
 dang_xuat = 0
-
-
-recognizer = cv2.face.LBPHFaceRecognizer_create()
-
-recognizer.read('/home/lapdo/NCKH/FaceID/trainer/trainer_face.yml')
-
-cascadePath = "/home/lapdo/NCKH/FaceID/haarcascade_frontalface_default.xml"
-faceCascade = cv2.CascadeClassifier(cascadePath)
-
-font  = cv2.FONT_HERSHEY_SIMPLEX
+count_img = 0
+state_face = "predict"
+state_train = None
+idNewFace = "None"
+infoTKVTFace = []
+idNewUserFace = None
 id = 0
 vt = fingerPrint()
+
+
 
 # Class Thread kiểm tra vân tay đăng nhập
 class FingerPrintThread(QThread):
@@ -59,6 +59,7 @@ class FingerPrintThread(QThread):
         
     def run(self):
         global tt_Webcam, idVt_thanh_cong, dang_xuat, tt_kn_vt, dem_knvt_khong, vt
+        
         
         while self.running:
             print("Thread van tay")
@@ -94,7 +95,7 @@ class FingerPrintThread(QThread):
                     tt_kn_vt = 0
                 except Exception as e:
                     print("Không thể kết nối lại cảm biến vân tay: ", str(e))
-            time.sleep(0.05)
+            time.sleep(1)
                     
             
             
@@ -112,8 +113,6 @@ class FingerPrintThread(QThread):
             print(e)
             return 0, "Khong"
         
-
-
 # Class Webcam
 class CaptureVideo(QThread):
     
@@ -124,79 +123,176 @@ class CaptureVideo(QThread):
         super(CaptureVideo, self).__init__(parent)
         global tt_Webcam
         self._running = True
-        self.state_face = "predict"
-        
         self.statusFalseFace = 0
-
-    
+        
     
     def run(self):
-        global tt_Webcam, idFace_thanh_cong, tt_kn_Webcam
-        tt_Webcam = "Bật"
-        
-        with open("/home/lapdo/NCKH/FaceID/user.txt", "r") as f:
-            names = f.read()
-        f.close()
-        names = names.split("\n")[:-1]
-        print("Names: ", names)
-        
-        cap = cv2.VideoCapture("/dev/video0")
+        global tt_Webcam, idFace_thanh_cong, tt_kn_Webcam, count_img, state_face
+        result_id_face = firebase.get(urlFaceID, None)
+        if result_id_face != None:
+            names = result_id_face["ID"]
+            tt_Webcam = "Bật"
+            self.recognizer = cv2.face.LBPHFaceRecognizer_create()
+            self.recognizer.read('/home/lapdo/NCKH/FaceID/trainer/trainer_face.yml')
+            self.cascadePath = "/home/lapdo/NCKH/FaceID/haarcascade_frontalface_default.xml"
+            self.faceCascade = cv2.CascadeClassifier(self.cascadePath)
+            self.font  = cv2.FONT_HERSHEY_SIMPLEX
+            
+            
+            cap = cv2.VideoCapture("/dev/video0")
+            if not cap.isOpened():
+                print("Không thể mở camera")
+                tt_Webcam = "Tắt"
+                return
+                
+                
+            while self._running and tt_Webcam == "Bật":
+                if cap.isOpened():
+                    ret, cv_img = cap.read()
+                    if ret:
+                        tt_Webcam = "Bật"
+                        
+                        self.signal_captureVideo.emit(cv_img)
+                        count_img = 0
+                        state_predict, id = self.predict_face(cv_img= cv_img, names = names)
+                        if state_predict == True:
+                            break
 
+                    else:
+                        print("Ket noi lai camera......")
+                        cap = cv2.VideoCapture("/dev/video0")
+                
+                else:
+                    print("Ket noi lai camera........")
+                    cap = cv2.VideoCapture("/dev/video0")
+                
+            cap.release()
+            print("đã tắt cam")
+            return
+        else:
+            pass
+    
+    def predict_face(self, cv_img, names):
+        global idFace_thanh_cong
+        self.statusTrueFace = 0
+        gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
+        faces = self.faceCascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5, minSize=(50,50))
         
+        for (x,y,w,h) in faces:
+            cv2.rectangle(cv_img, (x,y), (x+w, y+h), (0, 255, 0), 2)
+            
+            id, confidence = self.recognizer.predict(gray[y:y+h, x:x+w])
+            if (confidence < 100):
+                print("confidence: ", confidence)
+
+                id = names[id-1]
+
+                cv2.putText(cv_img, str(id), (x+5, y-5), self.font, 1, (255, 255, 255), 2)
+
+                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), self.font, 1, (255, 255, 0), 2)
+
+                if (confidence > 50):
+
+                    self.statusTrueFace += 1
+                    print("ID TC: ", id)
+                    idFace_thanh_cong = int(id)
+
+            else:
+                id=0
+                confidence = round(100-confidence)
+                cv2.putText(cv_img, str(id), (x+5, y-5), self.font, 1, (255, 255, 255), 2)
+
+                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), self.font, 1, (255, 255, 0), 1)
+        if self.statusTrueFace != 0:
+            print("Thanh cong")
+            self.signal_FaceID_dang_nhap_hop_le.emit()
+            return  True, id
+        else:
+            return False, "None"
+        
+    def stop(self):
+        global tt_Webcam
+        self._running = False
+        tt_Webcam = "Tắt"
+        print(tt_Webcam)
+        
+##################################################################################    
+class CollectFace(QThread):
+    signal_captureVideo_Collect = pyqtSignal(np.ndarray)
+    signal_FaceID_bi_trung = pyqtSignal(str, str)
+    def __init__(self, parent = None):
+        super(CollectFace, self).__init__(parent)
+        self._running = True
+        
+        
+    def run(self):
+        global tt_Webcam, state_face, state_train, infoTKVTFace, idNewUserFace
+        tt_Webcam = "Bật"
+        state_face = "collect"
+        state_train = True
+        self.font  = cv2.FONT_HERSHEY_SIMPLEX
+        self.recognizer = cv2.face.LBPHFaceRecognizer_create()
+        
+        file_list = os.listdir("/home/lapdo/NCKH/FaceID/trainer")
+        model_train = False
+        if "trainer_face.yml" in file_list:
+            self.recognizer.read('/home/lapdo/NCKH/FaceID/trainer/trainer_face.yml')
+            model_train = True
+        else:
+            model_train = False
+        cap = cv2.VideoCapture("/dev/video0")
+        face_detector = cv2.CascadeClassifier('/home/lapdo/NCKH/FaceID/haarcascade_frontalface_default.xml')
+        count_img = 0
+        count_face_trung = 0
+        dsFaceAll = get_all_info_database(urlUser, 3)
+        dsFaceNotNone = danh_sach_face_id(dsFaceAll)
+        self.newIdFace = len(dsFaceNotNone) + 1
+        print("New ID Face: ", self.newIdFace)
+        
+
         if not cap.isOpened():
             print("Không thể mở camera")
             tt_Webcam = "Tắt"
-            tt_kn_Webcam = "Khong"
             return
-        
         while self._running and tt_Webcam == "Bật":
-            
-            
             if cap.isOpened():
                 ret, cv_img = cap.read()
-                tt_kn_Webcam = "Co"
                 if ret:
-                    tt_Webcam = "Bật"
-                    if self.state_face == "predict":
-                        self.statusTrueFace = 0
-                        gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
-                        faces = faceCascade.detectMultiScale(gray, scaleFactor=1.2, minNeighbors=5, minSize=(50,50))
+                    tt_Webcam = "Bật"     
+                    gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY)
+                    faces = face_detector.detectMultiScale(gray, 1.3, 5)
+                    
+                    # Kiểm tra có trùng khuôn mặt nào không
+                    for (x, y, w, h) in faces:
+                        cv2.rectangle(cv_img, (x, y), (x+w, y+h), (255, 0, 0), 2)
                         
-                        for (x,y,w,h) in faces:
-                            cv2.rectangle(cv_img, (x,y), (x+w, y+h), (0, 255, 0), 2)
-                            
-                            id, confidence = recognizer.predict(gray[y:y+h, x:x+w])
-                            if (confidence < 100):
-
-                                confidence = round(100 - confidence)
-                                print("confidence: ", confidence)
-
-                                id = names[id-1]
-
-                                cv2.putText(cv_img, str(id), (x+5, y-5), font, 1, (255, 255, 255), 2)
-
-                                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), font, 1, (255, 255, 0), 1)
-
-                                if (confidence > 15):
-
-                                    self.statusTrueFace += 1
-                                    print("ID TC: ", id)
-                                    idFace_thanh_cong = int(id)
-
-                                break
-                            else:
-                                id=0
-                                confidence = round(100-confidence)
-                                cv2.putText(cv_img, str(id), (x+5, y-5), font, 1, (255, 255, 255), 2)
-
-                                cv2.putText(cv_img, str(confidence), (x+5, y+h-5), font, 1, (255, 255, 0), 1)
-                            
-                        if self.statusTrueFace != 0:
-                            print("Thanh cong")
-                            self.signal_FaceID_dang_nhap_hop_le.emit()
-                            break
-                             
-                    self.signal_captureVideo.emit(cv_img)
+                        # Kiểm tra Face có trùng không
+                        if model_train == True:
+                            id, confidence = self.recognizer.predict(gray[y:y+h, x:x+w])
+                            if confidence > 50:
+                                count_face_trung += 1
+                                print("Count trung: ", count_face_trung)
+                                print("ID trung: ", id)
+                        
+                        cv2.putText(cv_img, str(count_img), (x+5, y+h-5), self.font, 1, (255, 255, 0),2)
+                        count_img += 1
+                        cv2.imwrite("/home/lapdo/NCKH/FaceID/data_face/User." + str(self.newIdFace) + '.' + str(count_img) + ".jpg", gray[y:y+h,x:x+w])
+                        print("count img: ", count_img)
+                    if count_img >= 200: 
+                        break
+                    if count_face_trung != 0:
+                        path_folder_img = "/home/lapdo/NCKH/FaceID/data_face"
+                        list_file_face = os.listdir(path_folder_img)
+                        print("Danh sach info Face: ", infoTKVTFace)
+                        firebase.put(urlUser, idNewUserFace, infoTKVTFace) 
+                        for file in list_file_face:
+                            if f"User.{self.newIdFace}" in file:
+                                file = f"{path_folder_img}/{file}"
+                                print("file xóa")
+                                os.remove(file)
+                        self.signal_FaceID_bi_trung.emit("Lỗi", "Face ID đã bị trùng")
+                        break
+                    self.signal_captureVideo_Collect.emit(cv_img)
                 else:
                     print("Ket noi lai camera......")
                     cap = cv2.VideoCapture("/dev/video0")
@@ -204,18 +300,73 @@ class CaptureVideo(QThread):
             else:
                 print("Ket noi lai camera........")
                 cap = cv2.VideoCapture("/dev/video0")
-            
+        state_train = None    
         cap.release()
         print("đã tắt cam")
-        return
-                
+        
+        
+        # Train face
+        if count_face_trung == 0:
+            
+            # Thêm id mới vào ds
+            dsFaceNotNone.append(self.newIdFace)
+            print("Danh sach ID Face: ", dsFaceNotNone)
+            firebase.put(urlFaceID, "ID", dsFaceNotNone)
+            path_folder_img = "/home/lapdo/NCKH/FaceID/data_face"
+            self.trainFace(path_folder_img)
+        
+        
+    def trainFace(self, path):
+        '''path: path folder image face'''
+        global state_train, infoTKVTFace, idNewUserFace
+        state_train = True
+        try:
+            
+            recognizer = cv2.face.LBPHFaceRecognizer_create()
+            detector = cv2.CascadeClassifier('/home/lapdo/NCKH/FaceID/haarcascade_frontalface_default.xml')
+            
+            imagePaths = [os.path.join(path, f) for f in os.listdir(path)]
+            faceSamples = []
+            ids = []
+
+            for imagePath in imagePaths:
+                PIL_img = Image.open(imagePath).convert('L')  # Chuyển ảnh sang grayscale
+                img_numpy = np.array(PIL_img, 'uint8')
+                id = int(os.path.split(imagePath)[-1].split(".")[1])
+                faces = detector.detectMultiScale(img_numpy)
+
+                for (x, y, w, h) in faces:
+                    faceSamples.append(img_numpy[y:y+h, x:x+w])
+                    ids.append(id)
+
+            if len(faceSamples) == 0:
+                print("No faces found in images.")
+                return
+
+            recognizer.train(faceSamples, np.array(ids))
+            
+            # Tạo thư mục trainer nếu chưa có
+            if not os.path.exists('trainer'):
+                os.makedirs('trainer')
+
+            recognizer.write('/home/lapdo/NCKH/FaceID/trainer/trainer_face.yml')
+            print("Training completed successfully!")
+            infoTKVTFace[-1] = self.newIdFace
+            print("Danh sach info Face: ", infoTKVTFace)
+            firebase.put(urlUser, idNewUserFace, infoTKVTFace) 
+            state_train = False
+            idNewUserFace = None
+            return True
+        except:
+            state_train = None
+            return False
+            
     def stop(self):
         global tt_Webcam
         self._running = False
         tt_Webcam = "Tắt"
-        print(tt_Webcam)
-        
-        
+        self.terminate()
+    
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -239,26 +390,31 @@ class MainWindow(QMainWindow):
    
     # ================================================= Trang đăng nhập ================================================ 
     def vao_trang_dang_nhap(self):
-        self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_nhap)
-        self.clear_trang_dang_nhap()
-        # Khởi tạo thread kiểm tra vân tay
-        self.start_Finger_Print()
-        
-        # Khoi tao thread Face ID
-        self.start_Face_ID_dang_nhap()
-        
-        print("TK: ", self.uic.Edt_mk_dn.text())
-        self.uic.btn_face_dn.setEnabled(True)
-        if self.tin_hieu_dang_nhap == False: 
-            self.uic.btn_xn_dn.clicked.connect(self.xac_nhan_dang_nhap)
-            self.uic.btn_dk_dn.clicked.connect(self.trang_dang_ky)  
+        global state_face, state_train
+        state_face = "predict"
+        if state_train == True:
+            self.show_message("Thông báo", "Hệ thống đang tích hợp khuôn mặt")
+        else:
+            self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_nhap)
+            self.clear_trang_dang_nhap()
+            # Khởi tạo thread kiểm tra vân tay
+            self.start_Finger_Print()
             
-            self.uic.btn_quen_mk_dn.clicked.connect(self.trang_quen_mat_khau)
-            self.uic.btn_doi_mk_dn.clicked.connect(self.trang_doi_mat_khau)
+            # Khoi tao thread Face ID
+            self.start_Face_ID_dang_nhap()
             
-            self.tin_hieu_dang_nhap = True 
-        
-        self.uic.cb_mk_dn.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mk_dn, self.uic.Edt_mk_dn))
+            print("TK: ", self.uic.Edt_mk_dn.text())
+            
+            if self.tin_hieu_dang_nhap == False: 
+                self.uic.btn_xn_dn.clicked.connect(self.xac_nhan_dang_nhap)
+                self.uic.btn_dk_dn.clicked.connect(self.trang_dang_ky)  
+                
+                self.uic.btn_quen_mk_dn.clicked.connect(self.trang_quen_mat_khau)
+                self.uic.btn_doi_mk_dn.clicked.connect(self.trang_doi_mat_khau)
+                
+                self.tin_hieu_dang_nhap = True 
+            
+            self.uic.cb_mk_dn.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mk_dn, self.uic.Edt_mk_dn))
         
         
     # Hàm đăng nhập
@@ -281,10 +437,9 @@ class MainWindow(QMainWindow):
         # Lấy thông tin đăng nhập
         self.tkDN = self.uic.Edt_tk_dn.text()
         self.mkDn = self.uic.Edt_mk_dn.text()
-        idVt = self.uic.lb_vt_dn.text()
-        idFace = self.uic.lb_id_face_dn.text()
         
-        if (self.tkDN == "" and self.mkDn == "" and idVt == ""):
+        
+        if (self.tkDN == "" and self.mkDn == ""):
             showMessageBox("Đăng nhập", "Đăng Nhập không thành công\nĐăng nhập bằng tài khoản/ Quét vân tay")
             
         # Trường họp đăng nhập bằng tk mk
@@ -328,20 +483,37 @@ class MainWindow(QMainWindow):
     def start_Face_ID_dang_nhap(self):
         global tt_Webcam
         
-        self.uic.btn_face_dn.setEnabled(False)
         self.thread_webcam_face = CaptureVideo()
         self.thread_webcam_face.start()
         self.thread_webcam_face.signal_captureVideo.connect(self.show_webcam)
         self.thread_webcam_face.signal_FaceID_dang_nhap_hop_le.connect(self.Face_ID_thanh_cong)
     
+    def start_Collect_Face(self):
+        self.thread_collect_face = CollectFace()
+        self.thread_collect_face.start()
+        self.thread_collect_face.signal_captureVideo_Collect.connect(self.show_webcam_collectFace)
+        self.thread_collect_face.signal_FaceID_bi_trung.connect(self.show_message)
+        
+    
+    def stop_Collect_Face(self):
+        self.thread_collect_face.stop()
+    
             
     def show_webcam(self, cv_img):
         """Updates the image_label with a new opencv image"""
+        global state_face
         qt_img = self.convert_cv_qt(cv_img)
+        
         self.uic.lb_cam_dn.setPixmap(qt_img)
+      
+    def show_webcam_collectFace(self, cv_img):
+        global state_face
+        qt_img = self.convert_collect_cv_qt(cv_img)
+        self.uic.lb_cam_dki.setPixmap(qt_img)    
     
     def convert_cv_qt(self, cv_img):
         """Convert from an opencv image to QPixmap"""
+        global state_face
         if cv_img is None:
             return QPixmap()
         
@@ -351,113 +523,141 @@ class MainWindow(QMainWindow):
         convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
         
         # Sử dụng hàm scaled cố định kích thước ảnh cho label
+
         p = convert_to_Qt_format.scaled(self.uic.lb_cam_dn.width(), self.uic.lb_cam_dn.height(), Qt.AspectRatioMode.KeepAspectRatio)
         return QPixmap.fromImage(p)
 
+    def convert_collect_cv_qt(self, cv_img):
+        """Convert from an opencv image to QPixmap"""
+        global state_face
+        if cv_img is None:
+            return QPixmap()
+        
+        rgb_image = cv2.cvtColor(cv_img, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgb_image.shape
+        bytes_per_line = ch * w
+        convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format.Format_RGB888)
+        
+        # Sử dụng hàm scaled cố định kích thước ảnh cho label
 
+        p = convert_to_Qt_format.scaled(self.uic.lb_cam_dki.width(), self.uic.lb_cam_dki.height(), Qt.AspectRatioMode.KeepAspectRatio)
+        return QPixmap.fromImage(p)
 
     
     # ==============================================Hàm trang đăng ký==================================================
     def trang_dang_ky(self):
+        global state_face
         self.clear_trang_dang_ky()
         self.stop_thread_camera_finger()
-        
         self.uic.stackedWidget.setCurrentWidget(self.uic.trang_dang_ky)
         if self.tin_hieu_dang_ky == False:
             self.uic.btn_ql_dn.clicked.connect(self.vao_trang_dang_nhap)
             self.uic.btn_xn_dk.clicked.connect(self.xac_nhan_dang_ky)
-            self.uic.btn_face_dk.clicked.connect(self.trang_dang_ki_face_id)
             self.uic.btn_vt_dki.clicked.connect(self.dang_ki_van_tay)
             self.tin_hieu_dang_ky = True
             
         self.uic.cb_mkdki.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mkdki, self.uic.edt_mk_dk))
         self.uic.cb_mkl_dki.stateChanged.connect(lambda: self.hidden_show_text(self.uic.cb_mkl_dki, self.uic.edt_mkl_dk))
         
-    def trang_dang_ki_face_id(self):
-        pass
-    
     def dang_ki_van_tay(self):
+        global state_face, tt_Webcam, vt, state_train, infoTKVTFace, idNewUserFace, state_train
         
-        # Lấy danh sách vân tay
-       
-        self.tkDki = self.uic.edt_tk_dk.text()
-        self.mkDki = self.uic.edt_mk_dk.text()
-        self.mkDkiLai = self.uic.edt_mkl_dk.text()
         
-        if self.tkDki == "" or self.mkDki == "" or self.mkDkiLai == "":
-            showMessageBox("Đăng ký", "Bạn phải nhập TK/MK")
+        
+        if state_train == True:
+            self.show_message("Thông báo", "Hệ thống đang tích hợp vân tay")
         else:
-            listIDVanTay = get_all_info_database(urlUser, 2)
-            
-            listIDVanTay = danh_sach_van_tay(listIDVanTay)
-            listUser = get_all_info_database(urlUser, 0) # Lấy ra danh sách tài khoản
-            self.idNewUsers = f'User {len(listUser)}'
-            state_tk_van_tay_dki = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
-            print(state_tk_van_tay_dki)
-            try:
-                if state_tk_van_tay_dki == True:
-                    # Bắt đầu add
-                    
-                    stateAdd = vt.save_van_tay(list_van_tay= listIDVanTay)
-                    print('tt ADD: ', stateAdd)
-                    
-                    if stateAdd == False:
-                        showMessageBox("Đăng ký", "Đăng ký không thành công")
-                    elif stateAdd == "Khong":
-                        showMessageBox("Vân tay", "Lỗi Kết nối cảm biến và khởi động lại hệ thống")
-                    else:
-                        # Hỏi người dùng có thêm face id không
-                        # Có -> trở về tiếp tục đăng ký
-                        # Không -> tiếp tụ xác nhận đăng ký -> put dữ liệu lên
-                        self.idNewVanTay = len(listIDVanTay) + 1
+            self.tkDki = self.uic.edt_tk_dk.text()
+            self.mkDki = self.uic.edt_mk_dk.text()
+            self.mkDkiLai = self.uic.edt_mkl_dk.text()
+            if self.tkDki == "" or self.mkDki == "" or self.mkDkiLai == "":
+                showMessageBox("Đăng ký", "Bạn phải nhập TK/MK")
+            else:
+                listIDVanTay = get_all_info_database(urlUser, 2)
+                
+                listIDVanTay = danh_sach_van_tay(listIDVanTay)
+                listUser = get_all_info_database(urlUser, 0) # Lấy ra danh sách tài khoản
+                self.idNewUsers = f'User {len(listUser)}'
+                idNewUserFace = self.idNewUsers
+                state_tk_van_tay_dki = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
+                print(state_tk_van_tay_dki)
+                try:
+                    if state_tk_van_tay_dki == True:
+                        # Bắt đầu add
                         
-                        msg_box_ques = QMessageBox()
-                        msg_box_ques.setIcon(QMessageBox.Icon.Question)
-                        msg_box_ques.setWindowTitle("Xác nhận")
-                        msg_box_ques.setText("Bạn có muốn thêm Face ID không?")
-                        msg_box_ques.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
-                        return_choose = msg_box_ques.exec()
+                        stateAdd = vt.save_van_tay(list_van_tay= listIDVanTay)
+                        print('tt ADD: ', stateAdd)
                         
-                        if return_choose == QMessageBox.StandardButton.Yes:
-                            showMessageBox("Đăng ký", "Mời bạn đăng ký Face ID")
+                        if stateAdd == False:
+                            showMessageBox("Đăng ký", "Đăng ký không thành công")
+                        elif stateAdd == "Khong":
+                            showMessageBox("Vân tay", "Lỗi Kết nối cảm biến và khởi động lại hệ thống")
+                            
+                            
                         else:
-                            # Put dữ liệu
-                            listNewInfoUser = [self.tkDki, self.mkDki, self.idNewVanTay, 'None'] # tk mk vantay face
-                            firebase.put(urlUser, self.idNewUsers, listNewInfoUser)
-                            self.clear_trang_dang_ky()
-                            showMessageBox("Đăng ký", "Bạn đăng ký TK và Vân tay thành công")
-                else:
-                    showMessageBox("Đăng ký", state_tk_van_tay_dki)
-            except:
-                showMessageBox("Vân tay", "Lỗi cảm biến vân tay")
+                            # Hỏi người dùng có thêm face id không
+                            # Có -> trở về tiếp tục đăng ký
+                            # Không -> tiếp tụ xác nhận đăng ký -> put dữ liệu lên
+                            self.idNewVanTay = len(listIDVanTay) + 1
+                            
+                            msg_box_ques = QMessageBox()
+                            msg_box_ques.setIcon(QMessageBox.Icon.Question)
+                            msg_box_ques.setWindowTitle("Xác nhận")
+                            msg_box_ques.setText("Bạn có muốn thêm Face ID không?")
+                            msg_box_ques.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                            return_choose = msg_box_ques.exec()
+                            
+                            if return_choose == QMessageBox.StandardButton.Yes:
+                                showMessageBox("Đăng ký", "Mời bạn đăng ký Face ID")
+                                state_face = "collect"
+                                tt_Webcam = "Bật"
+                                self.start_Collect_Face()
+                                showMessageBox("Đăng ký", "Hệ thống đang thu thập dữ liệu và tích hợp\n Không thể thực hiện các chức năng khác")
+                                infoTKVTFace = [self.tkDki, self.mkDki, self.idNewVanTay, "None"] # tk mk vantay face
+                                
+                                
+                            else:
+                                # Put dữ liệu
+                                listNewInfoUser = [self.tkDki, self.mkDki, self.idNewVanTay, 'None'] # tk mk vantay face
+                                firebase.put(urlUser, self.idNewUsers, listNewInfoUser)
+                                self.clear_trang_dang_ky()
+                                showMessageBox("Đăng ký", "Bạn đăng ký TK và Vân tay thành công")
+                    else:
+                        showMessageBox("Đăng ký", state_tk_van_tay_dki)
+                except:
+                    showMessageBox("Vân tay", "Lỗi cảm biến vân tay")
         
 
     
     def xac_nhan_dang_ky(self):
+        global state_train
         # Lấy danh sách người dùng
         # Không trùng tk -> put dữ liệu lên
         # Trùng -> Thông báo lỗi
         
-        # Lấy thông tin đăng ký
-        self.tkDki = self.uic.edt_tk_dk.text()
-        self.mkDki = self.uic.edt_mk_dk.text()
-        self.mkDkiLai = self.uic.edt_mkl_dk.text()
-        
-        dsTK = get_all_info_database(urlUser, 0)
-        # Bắt buộc phải đăng ký tài khoản và mật khẩu
-        # Vân tay và Face ID nếu có
-        
-        state_dang_ky_tk = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
-        if state_dang_ky_tk == True:
-            thong_tin_dki = [self.tkDki, self.mkDki]
-            
-            idNewUsers = f'User {len(dsTK)}'
-            listNewInfoUser = [self.tkDki, self.mkDki, 'None', 'None'] # tk mk vantay face
-            firebase.put(urlUser, idNewUsers, listNewInfoUser)
-            self.clear_trang_dang_ky()
-            showMessageBox("Thông báo", "Đăng ký tài khoản thành công")
+        if state_train == True:
+            self.show_message("Thông báo", "Hệ thống đang tích hợp khuôn mặt")
         else:
-            showMessageBox("Thông báo", state_dang_ky_tk)
+            # Lấy thông tin đăng ký
+            self.tkDki = self.uic.edt_tk_dk.text()
+            self.mkDki = self.uic.edt_mk_dk.text()
+            self.mkDkiLai = self.uic.edt_mkl_dk.text()
+            
+            dsTK = get_all_info_database(urlUser, 0)
+            # Bắt buộc phải đăng ký tài khoản và mật khẩu
+            # Vân tay và Face ID nếu có
+            
+            state_dang_ky_tk = check_dang_ky_tai_khoan(self.tkDki, self.mkDki, self.mkDkiLai)
+            if state_dang_ky_tk == True:
+                thong_tin_dki = [self.tkDki, self.mkDki]
+                
+                idNewUsers = f'User {len(dsTK)}'
+                listNewInfoUser = [self.tkDki, self.mkDki, 'None', 'None'] # tk mk vantay face
+                firebase.put(urlUser, idNewUsers, listNewInfoUser)
+                self.clear_trang_dang_ky()
+                showMessageBox("Thông báo", "Đăng ký tài khoản thành công")
+            else:
+                showMessageBox("Thông báo", state_dang_ky_tk)
             
    
      ##################################### HÀM trang chính ################ 
@@ -550,23 +750,15 @@ class MainWindow(QMainWindow):
                 index_tk = listIDFace.index(idFace_thanh_cong)
                 self.tkDN = dstk[index_tk]
                 self.uic.lb_tk_dn.setText(self.tkDN)
-            
         else:
             self.uic.lb_tk_dn.setText(self.tkDN)
-        
         # Truy xuat ra tk dang nhap bang face id
-        
-        
         self.uic.lb_tk_dn.adjustSize()
-        
-        
-        
         # Bảng lịch hoạt động
         labels_lich_hoat_dong = ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
         data_lich_hoat_dong = danh_sach_lich_hoat_dong(urlLichHoatDong)
-        self.uic.tb_lich_hoat_dong = show_data_table(url = urlLichHoatDong, gui_table= self.uic.tb_lich_hoat_dong, labels=labels_lich_hoat_dong, dataFrame = data_lich_hoat_dong)
-
-    
+        self.uic.tb_lich_hoat_dong = show_data_table(gui_table= self.uic.tb_lich_hoat_dong, labels=labels_lich_hoat_dong, dataFrame = data_lich_hoat_dong)
+        
     
     
     def open_combo_option(self):
@@ -587,6 +779,8 @@ class MainWindow(QMainWindow):
         
     
     def on_button_may_clicked(self, button):
+        # button-> Thiết bị được chọn
+        thiet_bi = button.text()
         formatDateTime = "dd/MM/yyyy HH:mm:ss"
         dialog_choose_time = dialog.CustomDialog(self)
         if dialog_choose_time.exec() == QDialog.DialogCode.Accepted:
@@ -594,9 +788,14 @@ class MainWindow(QMainWindow):
             end_time = dialog_choose_time.date_time_end.dateTime().toString(formatDateTime)
             ttDL, tgDL = xac_nhan_dat_lich(start_time, end_time)
             if ttDL == True:
-                showMessageBox("Dat lich", f"BD: {start_time} den : {end_time}")
+                showMessageBox(f"Đặt lịch thành công {thiet_bi}", f"Bắt đầu: {start_time} đến : {end_time}")
+                current_time = time.localtime()
+                day_now = time.strftime("%d/%m/%Y", current_time)
+                data_dat_lich_no_save = danh_sach_ban_dat_lich([self.tkDN,  thiet_bi, day_now, start_time, end_time])
+                lb_dat_lich_no_save =  ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
+                show_data_table(gui_table=self.uic.tb_dat_lich, labels = lb_dat_lich_no_save, dataFrame=data_dat_lich_no_save)
             else:
-                showMessageBox("Dat lich", "Khong thanh cong")
+                showMessageBox("Đặt lịch", "Đặt lịch không thành công")
         else:
             dialog_choose_time.close()    
     ################################ TRANG QUÊN MẬT KHẨU###########################
@@ -850,15 +1049,20 @@ class MainWindow(QMainWindow):
         self.thread_van_tay.stop()
         if tt_Webcam == "Bật":
             self.thread_webcam_face.stop()
+            
+    def stop_thread_finger(self):
+        self.thread_van_tay.stop()
         
     def clear_trang_dang_ky(self):
         self.uic.edt_tk_dk.clear()
         self.uic.edt_mk_dk.clear()
         self.uic.edt_mkl_dk.clear()
+        self.uic.lb_cam_dki.clear()
     
     def clear_trang_dang_nhap(self):
         self.uic.Edt_tk_dn.clear()
         self.uic.Edt_mk_dn.clear()
+        self.uic.lb_cam_dn.clear()
         
     def clear_trang_quen_mat_khau(self):
         self.uic.edt_tk_quenmk.clear()
@@ -880,10 +1084,12 @@ class MainWindow(QMainWindow):
         
     def clear_trang_them_face(self):
         self.uic.edt_tk_them_face.clear()
+        self.uic.lb_cam_them.clear()
     
     def clear_trang_xoa_face(self):
         self.uic.edt_tk_xoa_face.clear()
-    
+        self.uic.lb_cam_xoa.clear()
+        
     def hidden_show_text(self, cb_edt, edt_text):
         
         if cb_edt.isChecked() == True:
@@ -950,12 +1156,35 @@ def danh_sach_lich_hoat_dong(urlLichHoatDong):
     return dataFrame
 
 #["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"]
-def danh_sach_bat_dat_lich(urlDatLichHT):
-    result = firebase.get(urlDatLichHT, None)
+def danh_sach_ban_dat_lich(value_data_dat_lich):
+    file_path = "ban_dat_lich_no_save.csv"
+    data_value = pd.DataFrame({"Tài khoản": [value_data_dat_lich[0]], 
+                               "Thiết bị":[value_data_dat_lich[1]], 
+                               "Ngày":[value_data_dat_lich[2]], 
+                              "Bắt đầu":[value_data_dat_lich[3]], 
+                              "Kết thúc":[value_data_dat_lich[4]]})
     
-    tk
+    if os.path.isfile(file_path) == False:
+        dataFrame = pd.DataFrame({"Tài khoản": [],
+                                  "Thiết bị":[], "Ngày":[], 
+                                    "Bắt đầu":[], "Kết thúc":[]})
+        dataFrame.to_csv(file_path, index=False)
+        data_lich_no_save = pd.read_csv(file_path)
+        data_lich_no_save = pd.concat([data_lich_no_save, data_value])
+        data_lich_no_save.to_csv(file_path, index = False)
+        
+    else:
+        data_lich_no_save = pd.read_csv(file_path)
+        data_lich_no_save = pd.concat([data_lich_no_save, data_value])
+        data_lich_no_save.to_csv(file_path, index = False)
+    print(data_lich_no_save)
+    return data_lich_no_save
+        
+        
+    
 
-def show_data_table( url, gui_table, labels, dataFrame):
+
+def show_data_table(gui_table, labels, dataFrame):
     # Lấy các cột của data đặt lịch:
     numberColumn = len(labels)
     
@@ -996,7 +1225,14 @@ def danh_sach_van_tay(dsVT):
         if item != "None":
             dsVtNew.append(item)
     return dsVtNew
-
+    
+def danh_sach_face_id(dsFace_id):
+    dsFaceidNew =[]
+    for item in dsFace_id:
+        if item != "None":
+            dsFaceidNew.append(item)
+    return dsFaceidNew
+    
 def showMessageBox(title, content):
     msg = QMessageBox()
     msg.setIcon(QMessageBox.Icon.Information)
@@ -1065,7 +1301,8 @@ def xac_nhan_dat_lich(batDau, ketThuc):
         return False, "None"
     else:
         return True, kTGDatLich
-        
+
+       
     
 if __name__ == '__main__':
     app = QApplication([])

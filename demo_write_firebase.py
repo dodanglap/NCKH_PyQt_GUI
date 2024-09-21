@@ -30,7 +30,7 @@ pK = '/Phong_khach'
 urlUser = "/Users"
 user1 = "/User 1"
 infoLogin = ["lapdodang@gmail.com", "12345678", "None", 1]
-firebase.put(urlUser, "User 0", infoLogin)
+# firebase.put(urlUser, "User 0", infoLogin)
 
 # firebase.delete(urlUser, None)
 # result = firebase.put(urlUser, user1, infoLogin) 
@@ -43,9 +43,14 @@ slMs = 2
 
 urlLichHoatDong = "/Lich_hoat_dong"
 
+urlFaceID = "/Face_ID"
+firebase.put(urlFaceID, "ID", [1,2,3])
+result = firebase.get(urlFaceID, None)
+print(result["ID"])
+
+
 # firebase.put(urlLichHoatDong, "0", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
 # firebase.put(urlLichHoatDong, "1", ["Tài khoản", "Thiết bị", "Ngày", "Bắt đầu", "Kết thúc"])
-
 
 # def danh_sach_lich_hoat_dong(urlLichHoatDong):
     

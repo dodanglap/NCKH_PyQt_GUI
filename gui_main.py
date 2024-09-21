@@ -139,40 +139,6 @@ class Ui_MainWindow(object):
         self.cb_mk_dn = QtWidgets.QCheckBox(parent=self.frame)
         self.cb_mk_dn.setObjectName("cb_mk_dn")
         self.verticalLayout_2.addWidget(self.cb_mk_dn)
-        self.label_4 = QtWidgets.QLabel(parent=self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.label_4.setFont(font)
-        self.label_4.setObjectName("label_4")
-        self.verticalLayout_2.addWidget(self.label_4)
-        self.lb_vt_dn = QtWidgets.QLabel(parent=self.frame)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lb_vt_dn.sizePolicy().hasHeightForWidth())
-        self.lb_vt_dn.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Arial,sans-serif")
-        font.setPointSize(-1)
-        self.lb_vt_dn.setFont(font)
-        self.lb_vt_dn.setStyleSheet("\n"
-"                border: 2px solid black;\n"
-"                border-radius: 10px;\n"
-"                padding: 10px;\n"
-"                background-color: #f5f5f5;\n"
-"                color: #333;\n"
-"                font-family: Arial, sans-serif;\n"
-"                font-size: 14px;\n"
-"\n"
-"")
-        self.lb_vt_dn.setText("")
-        self.lb_vt_dn.setObjectName("lb_vt_dn")
-        self.verticalLayout_2.addWidget(self.lb_vt_dn)
         self.horizontalLayout_3.addWidget(self.frame)
         spacerItem2 = QtWidgets.QSpacerItem(48, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
@@ -185,31 +151,6 @@ class Ui_MainWindow(object):
         self.frame_6.setObjectName("frame_6")
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.frame_6)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.label_11 = QtWidgets.QLabel(parent=self.frame_6)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.label_11.setFont(font)
-        self.label_11.setObjectName("label_11")
-        self.verticalLayout_6.addWidget(self.label_11)
-        self.lb_id_face_dn = QtWidgets.QLabel(parent=self.frame_6)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lb_id_face_dn.sizePolicy().hasHeightForWidth())
-        self.lb_id_face_dn.setSizePolicy(sizePolicy)
-        self.lb_id_face_dn.setStyleSheet("\n"
-"                border: 2px solid black;\n"
-"                border-radius: 10px;\n"
-"                padding: 10px;\n"
-"                background-color: #f5f5f5;\n"
-"                color: #333;\n"
-"                font-family: Arial, sans-serif;\n"
-"                font-size: 14px;\n"
-"\n"
-"")
-        self.lb_id_face_dn.setText("")
-        self.lb_id_face_dn.setObjectName("lb_id_face_dn")
-        self.verticalLayout_6.addWidget(self.lb_id_face_dn)
         self.lb_cam_dn = QtWidgets.QLabel(parent=self.frame_6)
         self.lb_cam_dn.setMinimumSize(QtCore.QSize(300, 300))
         self.lb_cam_dn.setMaximumSize(QtCore.QSize(300, 300))
@@ -274,28 +215,6 @@ class Ui_MainWindow(object):
 "")
         self.btn_doi_mk_dn.setObjectName("btn_doi_mk_dn")
         self.horizontalLayout.addWidget(self.btn_doi_mk_dn)
-        self.btn_face_dn = QtWidgets.QPushButton(parent=self.frame_2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_face_dn.sizePolicy().hasHeightForWidth())
-        self.btn_face_dn.setSizePolicy(sizePolicy)
-        self.btn_face_dn.setMaximumSize(QtCore.QSize(100, 50))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.btn_face_dn.setFont(font)
-        self.btn_face_dn.setStyleSheet("QPushButton {\n"
-"    background-color: rgb(0, 90, 0);\n"
-"    color: rgb(255, 255, 255);\n"
-"    border-radius: 15px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: green;\n"
-"}\n"
-"")
-        self.btn_face_dn.setObjectName("btn_face_dn")
-        self.horizontalLayout.addWidget(self.btn_face_dn)
         self.btn_xn_dn = QtWidgets.QPushButton(parent=self.frame_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -353,12 +272,10 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.trang_dang_nhap)
         self.trang_xoa_face_id = QtWidgets.QWidget()
         self.trang_xoa_face_id.setObjectName("trang_xoa_face_id")
-        self.gridLayout_12 = QtWidgets.QGridLayout(self.trang_xoa_face_id)
-        self.gridLayout_12.setObjectName("gridLayout_12")
-        self.horizontalLayout_41 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_41.setObjectName("horizontalLayout_41")
-        spacerItem5 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_41.addItem(spacerItem5)
+        self.gridLayout_11 = QtWidgets.QGridLayout(self.trang_xoa_face_id)
+        self.gridLayout_11.setObjectName("gridLayout_11")
+        spacerItem5 = QtWidgets.QSpacerItem(316, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_11.addItem(spacerItem5, 0, 0, 1, 1)
         self.verticalLayout_43 = QtWidgets.QVBoxLayout()
         self.verticalLayout_43.setObjectName("verticalLayout_43")
         spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -427,6 +344,18 @@ class Ui_MainWindow(object):
 "            }")
         self.edt_tk_xoa_face.setObjectName("edt_tk_xoa_face")
         self.verticalLayout_44.addWidget(self.edt_tk_xoa_face)
+        self.lb_cam_xoa = QtWidgets.QLabel(parent=self.frame_29)
+        self.lb_cam_xoa.setMinimumSize(QtCore.QSize(300, 300))
+        self.lb_cam_xoa.setMaximumSize(QtCore.QSize(300, 300))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.lb_cam_xoa.setFont(font)
+        self.lb_cam_xoa.setStyleSheet("border: 2px solid black;")
+        self.lb_cam_xoa.setFrameShape(QtWidgets.QFrame.Shape.WinPanel)
+        self.lb_cam_xoa.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.lb_cam_xoa.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lb_cam_xoa.setObjectName("lb_cam_xoa")
+        self.verticalLayout_44.addWidget(self.lb_cam_xoa)
         self.horizontalLayout_42.addWidget(self.frame_29)
         self.verticalLayout_43.addLayout(self.horizontalLayout_42)
         self.frame_30 = QtWidgets.QFrame(parent=self.trang_xoa_face_id)
@@ -478,10 +407,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_43.addWidget(self.frame_30)
         spacerItem7 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_43.addItem(spacerItem7)
-        self.horizontalLayout_41.addLayout(self.verticalLayout_43)
-        spacerItem8 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_41.addItem(spacerItem8)
-        self.gridLayout_12.addLayout(self.horizontalLayout_41, 0, 0, 1, 1)
+        self.gridLayout_11.addLayout(self.verticalLayout_43, 0, 1, 1, 1)
+        spacerItem8 = QtWidgets.QSpacerItem(316, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_11.addItem(spacerItem8, 0, 2, 1, 1)
         self.stackedWidget.addWidget(self.trang_xoa_face_id)
         self.trang_doi_mk = QtWidgets.QWidget()
         self.trang_doi_mk.setObjectName("trang_doi_mk")
@@ -889,40 +817,6 @@ class Ui_MainWindow(object):
         self.cb_mkl_dki = QtWidgets.QCheckBox(parent=self.frame_3)
         self.cb_mkl_dki.setObjectName("cb_mkl_dki")
         self.verticalLayout.addWidget(self.cb_mkl_dki)
-        self.label_9 = QtWidgets.QLabel(parent=self.frame_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
-        self.label_9.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.label_9.setFont(font)
-        self.label_9.setObjectName("label_9")
-        self.verticalLayout.addWidget(self.label_9)
-        self.lb_vt_dki = QtWidgets.QLabel(parent=self.frame_3)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lb_vt_dki.sizePolicy().hasHeightForWidth())
-        self.lb_vt_dki.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setFamily("Arial,sans-serif")
-        font.setPointSize(-1)
-        self.lb_vt_dki.setFont(font)
-        self.lb_vt_dki.setStyleSheet("\n"
-"                border: 2px solid black;\n"
-"                border-radius: 10px;\n"
-"                padding: 10px;\n"
-"                background-color: #f5f5f5;\n"
-"                color: #333;\n"
-"                font-family: Arial, sans-serif;\n"
-"                font-size: 14px;\n"
-"\n"
-"")
-        self.lb_vt_dki.setText("")
-        self.lb_vt_dki.setObjectName("lb_vt_dki")
-        self.verticalLayout.addWidget(self.lb_vt_dki)
         self.horizontalLayout_2.addWidget(self.frame_3)
         spacerItem15 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem15)
@@ -943,20 +837,6 @@ class Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.verticalLayout_3.addWidget(self.label_5)
-        self.lb_id_face_dki = QtWidgets.QLabel(parent=self.frame_5)
-        self.lb_id_face_dki.setStyleSheet("\n"
-"                border: 2px solid black;\n"
-"                border-radius: 10px;\n"
-"                padding: 10px;\n"
-"                background-color: #f5f5f5;\n"
-"                color: #333;\n"
-"                font-family: Arial, sans-serif;\n"
-"                font-size: 14px;\n"
-"\n"
-"")
-        self.lb_id_face_dki.setText("")
-        self.lb_id_face_dki.setObjectName("lb_id_face_dki")
-        self.verticalLayout_3.addWidget(self.lb_id_face_dki)
         self.lb_cam_dki = QtWidgets.QLabel(parent=self.frame_5)
         self.lb_cam_dki.setMinimumSize(QtCore.QSize(300, 300))
         self.lb_cam_dki.setMaximumSize(QtCore.QSize(300, 300))
@@ -987,7 +867,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btn_vt_dki.sizePolicy().hasHeightForWidth())
         self.btn_vt_dki.setSizePolicy(sizePolicy)
-        self.btn_vt_dki.setMaximumSize(QtCore.QSize(130, 50))
+        self.btn_vt_dki.setMaximumSize(QtCore.QSize(200, 50))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.btn_vt_dki.setFont(font)
@@ -1005,30 +885,6 @@ class Ui_MainWindow(object):
 "")
         self.btn_vt_dki.setObjectName("btn_vt_dki")
         self.horizontalLayout_4.addWidget(self.btn_vt_dki)
-        self.btn_face_dk = QtWidgets.QPushButton(parent=self.frame_4)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_face_dk.sizePolicy().hasHeightForWidth())
-        self.btn_face_dk.setSizePolicy(sizePolicy)
-        self.btn_face_dk.setMaximumSize(QtCore.QSize(130, 50))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.btn_face_dk.setFont(font)
-        self.btn_face_dk.setStyleSheet("QPushButton {\n"
-"    background-color: rgb(60, 0, 0);\n"
-"    color: rgb(255, 255, 255);\n"
-"    border-radius: 15px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(109, 109, 109);\n"
-"    \n"
-"    \n"
-"}\n"
-"")
-        self.btn_face_dk.setObjectName("btn_face_dk")
-        self.horizontalLayout_4.addWidget(self.btn_face_dk)
         self.btn_xn_dk = QtWidgets.QPushButton(parent=self.frame_4)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
@@ -1827,12 +1683,10 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.trang_xoa_van_tay)
         self.trang_them_face_id = QtWidgets.QWidget()
         self.trang_them_face_id.setObjectName("trang_them_face_id")
-        self.gridLayout_11 = QtWidgets.QGridLayout(self.trang_them_face_id)
-        self.gridLayout_11.setObjectName("gridLayout_11")
-        self.horizontalLayout_38 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_38.setObjectName("horizontalLayout_38")
-        spacerItem43 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_38.addItem(spacerItem43)
+        self.gridLayout_7 = QtWidgets.QGridLayout(self.trang_them_face_id)
+        self.gridLayout_7.setObjectName("gridLayout_7")
+        spacerItem43 = QtWidgets.QSpacerItem(316, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_7.addItem(spacerItem43, 0, 0, 1, 1)
         self.verticalLayout_41 = QtWidgets.QVBoxLayout()
         self.verticalLayout_41.setObjectName("verticalLayout_41")
         spacerItem44 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -1901,6 +1755,18 @@ class Ui_MainWindow(object):
 "            }")
         self.edt_tk_them_face.setObjectName("edt_tk_them_face")
         self.verticalLayout_42.addWidget(self.edt_tk_them_face)
+        self.lb_cam_them = QtWidgets.QLabel(parent=self.frame_27)
+        self.lb_cam_them.setMinimumSize(QtCore.QSize(300, 300))
+        self.lb_cam_them.setMaximumSize(QtCore.QSize(300, 300))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        self.lb_cam_them.setFont(font)
+        self.lb_cam_them.setStyleSheet("border: 2px solid black;")
+        self.lb_cam_them.setFrameShape(QtWidgets.QFrame.Shape.WinPanel)
+        self.lb_cam_them.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.lb_cam_them.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.lb_cam_them.setObjectName("lb_cam_them")
+        self.verticalLayout_42.addWidget(self.lb_cam_them)
         self.horizontalLayout_39.addWidget(self.frame_27)
         self.verticalLayout_41.addLayout(self.horizontalLayout_39)
         self.frame_28 = QtWidgets.QFrame(parent=self.trang_them_face_id)
@@ -1952,10 +1818,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_41.addWidget(self.frame_28)
         spacerItem45 = QtWidgets.QSpacerItem(20, 118, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_41.addItem(spacerItem45)
-        self.horizontalLayout_38.addLayout(self.verticalLayout_41)
-        spacerItem46 = QtWidgets.QSpacerItem(58, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_38.addItem(spacerItem46)
-        self.gridLayout_11.addLayout(self.horizontalLayout_38, 0, 0, 1, 1)
+        self.gridLayout_7.addLayout(self.verticalLayout_41, 0, 1, 1, 1)
+        spacerItem46 = QtWidgets.QSpacerItem(316, 18, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.gridLayout_7.addItem(spacerItem46, 0, 2, 1, 1)
         self.stackedWidget.addWidget(self.trang_them_face_id)
         self.gridLayout.addWidget(self.stackedWidget, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -1968,7 +1833,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(6)
+        self.stackedWidget.setCurrentIndex(3)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -1978,16 +1843,14 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Tài khoản (email)"))
         self.label_3.setText(_translate("MainWindow", "Mật khẩu"))
         self.cb_mk_dn.setText(_translate("MainWindow", "Hiện mật khẩu"))
-        self.label_4.setText(_translate("MainWindow", "Vân tay"))
-        self.label_11.setText(_translate("MainWindow", "Khuôn mặt"))
         self.lb_cam_dn.setText(_translate("MainWindow", "Camera Face ID"))
         self.btn_quen_mk_dn.setText(_translate("MainWindow", "Quên mật khẩu"))
         self.btn_doi_mk_dn.setText(_translate("MainWindow", "Đổi mật khẩu"))
-        self.btn_face_dn.setText(_translate("MainWindow", "FACE ID"))
         self.btn_xn_dn.setText(_translate("MainWindow", "Xác nhận"))
         self.btn_dk_dn.setText(_translate("MainWindow", "Đăng ký"))
         self.label_47.setText(_translate("MainWindow", "Xóa Face ID"))
         self.label_48.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.lb_cam_xoa.setText(_translate("MainWindow", "Camera Face ID"))
         self.btn_trang_chu_xoa_face.setText(_translate("MainWindow", "Trang chủ"))
         self.btn_xoa_face.setText(_translate("MainWindow", "Xóa Face ID"))
         self.label_15.setText(_translate("MainWindow", "Đổi mật khẩu"))
@@ -2006,11 +1869,9 @@ class Ui_MainWindow(object):
         self.cb_mkdki.setText(_translate("MainWindow", "Hiện mật khẩu"))
         self.label_10.setText(_translate("MainWindow", "Xác nhận mật khẩu"))
         self.cb_mkl_dki.setText(_translate("MainWindow", "Hiện mật khẩu xác nhận"))
-        self.label_9.setText(_translate("MainWindow", "Vân tay"))
         self.label_5.setText(_translate("MainWindow", "Khuôn mặt"))
         self.lb_cam_dki.setText(_translate("MainWindow", "Camera Face ID"))
-        self.btn_vt_dki.setText(_translate("MainWindow", "Thêm vân tay"))
-        self.btn_face_dk.setText(_translate("MainWindow", "Thêm Face ID"))
+        self.btn_vt_dki.setText(_translate("MainWindow", "Thêm vân tay/ Face ID"))
         self.btn_xn_dk.setText(_translate("MainWindow", "Xác nhận"))
         self.btn_ql_dn.setText(_translate("MainWindow", "Đăng nhập"))
         self.btn_dx_user.setText(_translate("MainWindow", "Đăng xuất"))
@@ -2040,5 +1901,6 @@ class Ui_MainWindow(object):
         self.btn_xoa_vt.setText(_translate("MainWindow", "Xóa vân tay"))
         self.label_45.setText(_translate("MainWindow", "Thêm Face ID"))
         self.label_46.setText(_translate("MainWindow", "Tài khoản (email)"))
+        self.lb_cam_them.setText(_translate("MainWindow", "Camera Face ID"))
         self.btn_trang_chu_them_face.setText(_translate("MainWindow", "Trang chủ"))
         self.btn_them_vt_them_2.setText(_translate("MainWindow", "ThêmFace ID"))
